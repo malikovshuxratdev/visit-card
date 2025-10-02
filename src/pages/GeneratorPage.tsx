@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Space } from 'antd';
 import { PrinterOutlined, ReloadOutlined } from '@ant-design/icons';
 import { QRCodeSVG } from 'qrcode.react';
@@ -12,55 +12,40 @@ import email from '../assets/icons/email.svg';
 import website from '../assets/icons/internet.svg';
 import innovation from '../assets/icons/innovation.svg';
 import { useNavigate } from 'react-router-dom';
+import PrintPreviewModal from '../components/PrintPreviewModal';
 
 const GeneratorPage: React.FC = () => {
     const frontCardRef = useRef<HTMLDivElement>(null);
     const backCardRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [frontImage, setFrontImage] = useState<string>();
+    const [backImage, setBackImage] = useState<string>();
+
     const handleStartOver = () => {
         navigate('/');
     };
 
-    const downloadCardAsPng = async (
-        ref: React.RefObject<HTMLDivElement>,
-        fileName: string
-    ) => {
+    const toPng = async (ref: React.RefObject<HTMLDivElement>) => {
         if (!ref.current) return;
-
-        const node = ref.current;
-        const rect = node.getBoundingClientRect();
-
-        try {
-            const dataUrl = await htmlToImage.toPng(node, {
-                cacheBust: true,
-                pixelRatio: 2,
-                width: rect.width,
-                height: rect.height,
-                style: {
-                    margin: '0',
-                },
-            });
-
-            const link = document.createElement('a');
-            link.download = fileName;
-            link.href = dataUrl;
-            link.click();
-        } catch (error) {
-            console.error('PNG yaratishda xatolik:', error);
-        }
+        const rect = ref.current.getBoundingClientRect();
+        return await htmlToImage.toPng(ref.current, {
+            cacheBust: true,
+            pixelRatio: 2,
+            width: rect.width,
+            height: rect.height,
+            style: { margin: '0' },
+        });
     };
 
-    const handleDownloadFrontPng = () =>
-        downloadCardAsPng(frontCardRef, 'front-card.png');
-    const handleDownloadBackPng = () =>
-        downloadCardAsPng(backCardRef, 'back-card.png');
-
-    const handlePrint = async () => {
-        await handleDownloadFrontPng();
-        setTimeout(() => {
-            handleDownloadBackPng();
-        }, 500);
+    // Modalni ochish
+    const handleOpenPrintPreview = async () => {
+        const frontUrl = await toPng(frontCardRef);
+        const backUrl = await toPng(backCardRef);
+        setFrontImage(frontUrl);
+        setBackImage(backUrl);
+        setIsModalOpen(true);
     };
 
     return (
@@ -197,7 +182,7 @@ const GeneratorPage: React.FC = () => {
                                     <img
                                         src={innovation}
                                         alt="Innovation"
-                                        className="w-[26px] h-[26px] absolute bottom-[8px] right-[8px] bg-white"
+                                        className="w-[26px] h-[26px] absolute bottom-[38px] right-[38px] bg-white"
                                     />
                                 </div>
 
@@ -247,7 +232,7 @@ const GeneratorPage: React.FC = () => {
                         type="primary"
                         size="large"
                         icon={<PrinterOutlined />}
-                        onClick={handlePrint}
+                        onClick={handleOpenPrintPreview}
                     >
                         Chop etish
                     </Button>
@@ -260,6 +245,14 @@ const GeneratorPage: React.FC = () => {
                     </Button>
                 </Space>
             </div>
+
+            {/* Modal */}
+            <PrintPreviewModal
+                visible={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                frontImage={frontImage}
+                backImage={backImage}
+            />
         </div>
     );
 };
