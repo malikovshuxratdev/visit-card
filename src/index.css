@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Visit card flip animation */
+.rotate-y-0 {
+    transform: rotateY(0deg);
+}
+
+.rotate-y-180 {
+    transform: rotateY(180deg);
+}
+
+.-rotate-y-180 {
+    transform: rotateY(-180deg);
+}
+
+.visit-card-preview {
+    perspective: 1000px;
+}
+
+.visit-card-preview > div {
+    transform-style: preserve-3d;
+}
