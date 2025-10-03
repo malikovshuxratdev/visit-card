@@ -27,6 +27,7 @@ const GeneratorPage: React.FC = () => {
     const [frontImage, setFrontImage] = useState<string>();
     const [backImage, setBackImage] = useState<string>();
     const [isImagesLoading, setIsImagesLoading] = useState(true);
+    const [isGeneratingPng, setIsGeneratingPng] = useState(false);
 
     const handleStartOver = () => {
         navigate('/');
@@ -66,11 +67,18 @@ const GeneratorPage: React.FC = () => {
 
     // Modalni ochish
     const handleOpenPrintPreview = async () => {
-        const frontUrl = await toPng(frontCardRef);
-        const backUrl = await toPng(backCardRef);
-        setFrontImage(frontUrl);
-        setBackImage(backUrl);
-        setIsModalOpen(true);
+        setIsGeneratingPng(true);
+        try {
+            const frontUrl = await toPng(frontCardRef);
+            const backUrl = await toPng(backCardRef);
+            setFrontImage(frontUrl);
+            setBackImage(backUrl);
+            setIsModalOpen(true);
+        } catch (error) {
+            console.error('PNG yaratishda xatolik:', error);
+        } finally {
+            setIsGeneratingPng(false);
+        }
     };
 
     if (isLoading || isImagesLoading) {
@@ -80,7 +88,7 @@ const GeneratorPage: React.FC = () => {
                 <div className="text-lg text-gray-600">
                     {isLoading
                         ? "Ma'lumotlar yuklanmoqda..."
-                        : 'Karta rasmlari yuklanmoqda...'}
+                        : 'Visit card yuklanmoqda...'}
                 </div>
             </div>
         );
@@ -228,7 +236,7 @@ const GeneratorPage: React.FC = () => {
                                     <img
                                         src={innovation}
                                         alt="Innovation"
-                                        className="w-[26px] h-[26px] absolute bottom-[38px] right-[38px] bg-white"
+                                        className="w-[30px] h-[30px] absolute bottom-[42px] rounded-full right-[42px] bg-white"
                                     />
                                 </div>
 
@@ -275,19 +283,23 @@ const GeneratorPage: React.FC = () => {
             <div className="text-center mt-8">
                 <Space size="large">
                     <Button
+                        size="large"
+                        onClick={handleStartOver}
+                        icon={<ReloadOutlined />}
+                        className=" text-lg px-4 py-2 h-auto"
+                    >
+                        Boshiga Qaytarish
+                    </Button>
+                    <Button
                         type="primary"
                         size="large"
                         icon={<PrinterOutlined />}
                         onClick={handleOpenPrintPreview}
+                        className="border-0 text-lg px-4 py-2 h-auto"
+                        loading={isGeneratingPng}
+                        disabled={isGeneratingPng}
                     >
-                        Chop etish
-                    </Button>
-                    <Button
-                        size="large"
-                        onClick={handleStartOver}
-                        icon={<ReloadOutlined />}
-                    >
-                        Boshiga Qaytarish
+                        {isGeneratingPng ? 'PNG yaratilmoqda...' : 'Chop etish'}
                     </Button>
                 </Space>
             </div>
