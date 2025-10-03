@@ -1,15 +1,19 @@
 import React from 'react';
 import { Card, Form, Input, Button, Typography } from 'antd';
 import { UserOutlined, LockOutlined, LoginOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useLoginMutate } from '../hooks/useLogin';
+import { LoginBodyType } from '../types/login';
 
 const { Title, Text } = Typography;
 
 const LoginPage: React.FC = () => {
-    const navigate = useNavigate();
+    const { mutate, isPending } = useLoginMutate();
 
-    const onFinish = async () => {
-        navigate('/');
+    const onFinish = async (values: LoginBodyType) => {
+        await mutate({
+            username: values.username,
+            password: values.password,
+        });
     };
 
     return (
@@ -81,8 +85,9 @@ const LoginPage: React.FC = () => {
                             <Button
                                 type="primary"
                                 htmlType="submit"
-                                loading={false}
+                                loading={isPending}
                                 icon={<LoginOutlined />}
+                                disabled={isPending}
                                 className="w-full h-12 bg-gradient-to-r from-blue-500 to-purple-600 border-0 shadow-lg text-lg"
                             >
                                 Kirish

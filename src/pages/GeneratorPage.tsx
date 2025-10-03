@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { Button, Space } from 'antd';
+import React, { useRef, useState, useEffect } from 'react';
+import { Button, Space, Spin } from 'antd';
 import { PrinterOutlined, ReloadOutlined } from '@ant-design/icons';
 import { QRCodeSVG } from 'qrcode.react';
 import * as htmlToImage from 'html-to-image';
@@ -11,21 +11,46 @@ import phone from '../assets/icons/phone.svg';
 import email from '../assets/icons/email.svg';
 import website from '../assets/icons/internet.svg';
 import innovation from '../assets/icons/innovation.svg';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PrintPreviewModal from '../components/PrintPreviewModal';
+import { useGetUserQuery } from '../hooks/useVisitCard';
+import moment from 'moment';
 
 const GeneratorPage: React.FC = () => {
+    const { id } = useParams<{ id: string }>();
     const frontCardRef = useRef<HTMLDivElement>(null);
     const backCardRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
+    const { data, isLoading } = useGetUserQuery(id!);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [frontImage, setFrontImage] = useState<string>();
     const [backImage, setBackImage] = useState<string>();
+    const [isImagesLoading, setIsImagesLoading] = useState(true);
 
     const handleStartOver = () => {
         navigate('/');
     };
+
+    // SVG rasmlar yuklash holatini kuzatish
+    useEffect(() => {
+        const frontImg = new Image();
+        const backImg = new Image();
+        let loadedCount = 0;
+
+        const checkAllLoaded = () => {
+            loadedCount++;
+            if (loadedCount === 2) {
+                setIsImagesLoading(false);
+            }
+        };
+
+        frontImg.onload = checkAllLoaded;
+        backImg.onload = checkAllLoaded;
+
+        frontImg.src = frontCardImage;
+        backImg.src = backCardImage;
+    }, []);
 
     const toPng = async (ref: React.RefObject<HTMLDivElement>) => {
         if (!ref.current) return;
@@ -48,6 +73,19 @@ const GeneratorPage: React.FC = () => {
         setIsModalOpen(true);
     };
 
+    if (isLoading || isImagesLoading) {
+        return (
+            <div className="h-screen flex flex-col items-center justify-center space-y-4">
+                <Spin size="large" />
+                <div className="text-lg text-gray-600">
+                    {isLoading
+                        ? "Ma'lumotlar yuklanmoqda..."
+                        : 'Karta rasmlari yuklanmoqda...'}
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="mx-auto">
             <div className="flex flex-col items-center space-y-8">
@@ -69,7 +107,7 @@ const GeneratorPage: React.FC = () => {
                                     Science ID:
                                 </div>
                                 <div className="text-[11px] font-semibold ml-1 text-[#000]">
-                                    BNV-0125-0002
+                                    {data?.profile.science_id}
                                 </div>
                             </div>
                         </div>
@@ -79,7 +117,10 @@ const GeneratorPage: React.FC = () => {
                             <div className="flex items-center justify-center">
                                 <div className="border border-[#6D88B1] rounded-[2px] w-[114px] h-[148px] flex items-center justify-center relative">
                                     <img
-                                        src={defaultAvatar}
+                                        src={
+                                            data?.profile?.photo ??
+                                            defaultAvatar
+                                        }
                                         className="w-[112px] h-[146px] object-cover rounded-[2px]"
                                         alt="Avatar"
                                     />
@@ -95,7 +136,7 @@ const GeneratorPage: React.FC = () => {
                                             Familiyasi
                                         </div>
                                         <div className="text-[11px] font-medium text-[#000]">
-                                            ISLOMOV
+                                            {data?.profile.sur_name}
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
@@ -103,7 +144,7 @@ const GeneratorPage: React.FC = () => {
                                             Ismi
                                         </div>
                                         <div className="text-[11px] font-medium text-[#000]">
-                                            DUSTMUROD
+                                            {data?.profile.first_name}
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
@@ -111,7 +152,7 @@ const GeneratorPage: React.FC = () => {
                                             Otasining ismi
                                         </div>
                                         <div className="text-[11px] font-medium text-[#000]">
-                                            G'AYBULLA O'G'LI
+                                            {data?.profile.mid_name}
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
@@ -119,7 +160,8 @@ const GeneratorPage: React.FC = () => {
                                             Ilmiy darajasi
                                         </div>
                                         <div className="text-[11px] font-medium text-[#000]">
-                                            PHD
+                                            {data?.profile?.degree_name ??
+                                                "Yo'q"}
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
@@ -127,7 +169,7 @@ const GeneratorPage: React.FC = () => {
                                             Ilmiy unvoni
                                         </div>
                                         <div className="text-[11px] font-medium text-[#000]">
-                                            Yo'q
+                                            {data?.profile?.title ?? "Yo'q"}
                                         </div>
                                     </div>
                                 </div>
@@ -138,7 +180,9 @@ const GeneratorPage: React.FC = () => {
                                         Tug'ilgan sanasi
                                     </div>
                                     <div className="text-[11px] font-medium text-[#000]">
-                                        22.02.1999
+                                        {moment(
+                                            data?.profile?.birth_date
+                                        ).format('DD.MM.YYYY') ?? "Yo'q"}
                                     </div>
                                 </div>
                                 <div className="flex flex-col">
@@ -146,7 +190,9 @@ const GeneratorPage: React.FC = () => {
                                         Ro'yxatdan o'tgan sana
                                     </div>
                                     <div className="text-[11px] font-medium text-[#000]">
-                                        22.02.2025
+                                        {moment(
+                                            data?.profile?.registered_at
+                                        ).format('DD.MM.YYYY') ?? "Yo'q"}
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +220,7 @@ const GeneratorPage: React.FC = () => {
                                 {/* Qr code*/}
                                 <div className="w-[110px] h-[110px] bg-white border-2 border-gray-300 flex items-center justify-center relative">
                                     <QRCodeSVG
-                                        value="BNV-0125-0002"
+                                        value={`https://id.ilmiy.uz/user/card/${data?.profile?.science_id}`}
                                         size={110}
                                         level="M"
                                         includeMargin={false}
@@ -195,7 +241,7 @@ const GeneratorPage: React.FC = () => {
                                             className="w-[16px] h-[16px]"
                                         />
                                         <div className="text-[12px] font-medium text-[#212121] ml-[8px]">
-                                            +998 99 123 45 67
+                                            +{data?.profile?.phone_number}
                                         </div>
                                     </div>
                                     <div className="flex items-center">
@@ -205,7 +251,7 @@ const GeneratorPage: React.FC = () => {
                                             className="w-[16px] h-[16px]"
                                         />
                                         <div className="text-[12px] font-medium text-[#212121] ml-[8px]">
-                                            mobiledeveloper@gmail.com
+                                            {data?.profile?.email}
                                         </div>
                                     </div>
                                     <div className="flex items-center">

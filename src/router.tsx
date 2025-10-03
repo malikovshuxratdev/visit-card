@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
                 element: <CameraPage />,
             },
             {
-                path: 'generator',
+                path: 'generator/:id',
                 element: <GeneratorPage />,
             },
         ],

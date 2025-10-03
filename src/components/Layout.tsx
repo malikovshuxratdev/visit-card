@@ -1,11 +1,26 @@
 import { Layout, Typography } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import '../App.css';
+import { TokenService } from '../utils/storage';
 
 const { Content, Header } = Layout;
 const { Title } = Typography;
 
 function AppLayout() {
+    const token = TokenService.getToken();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/login');
+        }
+    }, [token, navigate]);
+
+    if (!token) {
+        return null;
+    }
+
     return (
         <Layout className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
             <Header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-white/20">
