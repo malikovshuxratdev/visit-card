@@ -56,11 +56,15 @@ const GeneratorPage: React.FC = () => {
     const toPng = async (ref: React.RefObject<HTMLDivElement>) => {
         if (!ref.current) return;
         const rect = ref.current.getBoundingClientRect();
+        const scale = 4; // render at higher DPI for crisp PNG
         return await htmlToImage.toPng(ref.current, {
             cacheBust: true,
-            pixelRatio: 2,
+            pixelRatio: scale,
             width: rect.width,
             height: rect.height,
+            canvasWidth: rect.width * scale,
+            canvasHeight: rect.height * scale,
+            backgroundColor: '#ffffff',
             style: { margin: '0' },
         });
     };
@@ -107,9 +111,9 @@ const GeneratorPage: React.FC = () => {
                         alt="Front Card"
                         className="w-[450px] h-[280px]"
                     />
-                    <div className="w-[450px] h-[280px] absolute top-0 left-0 flex flex-col ml-[10px]">
+                    <div className="w-[450px] h-[280px] absolute top-0 left-0 flex flex-col ml-[15px]">
                         {/* Science ID */}
-                        <div className="mt-[70px]">
+                        <div className="mt-[65px]">
                             <div className="bg-[#8DAAD433] rounded-md p-1 w-[170px] flex items-center justify-center">
                                 <div className="italic text-[11px] text-[#535862]">
                                     Science ID:
@@ -121,7 +125,7 @@ const GeneratorPage: React.FC = () => {
                         </div>
 
                         {/* Avatar */}
-                        <div className="flex items-center mt-[8px]">
+                        <div className="flex items-center mt-[px]">
                             <div className="flex items-center justify-center">
                                 <div className="border border-[#6D88B1] rounded-[2px] w-[114px] h-[148px] flex items-center justify-center relative">
                                     <img
@@ -218,7 +222,7 @@ const GeneratorPage: React.FC = () => {
                         alt="Back Card"
                         className="w-[450px] h-[280px]"
                     />
-                    <div className="w-[450px] h-[280px] absolute top-0 left-0 flex flex-col ml-[10px]">
+                    <div className="w-[450px] h-[280px] absolute top-0 left-0 flex flex-col ml-[20px]">
                         <div className="mt-[48px]">
                             <div className="font-medium text-[18px] text-[#212121] w-[360px]">
                                 Ilmiy-innovatsion faoliyat bilan shug’ullanuvchi
@@ -243,9 +247,9 @@ const GeneratorPage: React.FC = () => {
                                         <img
                                             src={phone}
                                             alt="Phone"
-                                            className="w-[16px] h-[16px]"
+                                            className="w-[20px] h-[20px]"
                                         />
-                                        <div className="text-[12px] font-medium text-[#212121] ml-[8px]">
+                                        <div className="text-[16px] font-medium text-[#212121] ml-[8px]">
                                             +{data?.profile?.phone_number}
                                         </div>
                                     </div>
@@ -253,9 +257,9 @@ const GeneratorPage: React.FC = () => {
                                         <img
                                             src={email}
                                             alt="Email"
-                                            className="w-[16px] h-[16px]"
+                                            className="w-[20px] h-[20px]"
                                         />
-                                        <div className="text-[12px] font-medium text-[#212121] ml-[8px]">
+                                        <div className="text-[16px] font-medium text-[#212121] ml-[8px]">
                                             {data?.profile?.email}
                                         </div>
                                     </div>
@@ -263,9 +267,9 @@ const GeneratorPage: React.FC = () => {
                                         <img
                                             src={website}
                                             alt="Website"
-                                            className="w-[16px] h-[16px]"
+                                            className="w-[20px] h-[20px]"
                                         />
-                                        <div className="text-[12px] font-medium text-[#212121] ml-[8px]">
+                                        <div className="text-[16px] font-medium text-[#212121] ml-[8px]">
                                             https://id.ilmiy.uz
                                         </div>
                                     </div>
