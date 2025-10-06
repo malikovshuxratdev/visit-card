@@ -209,7 +209,7 @@ const GeneratorPage: React.FC = () => {
                 </div>
 
                 {/* Back Card */}
-                <div
+                {/* <div
                     ref={backCardRef}
                     className="relative rounded-[8px] w-[450px] h-[280px] overflow-hidden"
                 >
@@ -225,7 +225,6 @@ const GeneratorPage: React.FC = () => {
                                 jismoniy shaxslarni identifikatori
                             </div>
                             <div className="flex items-center mt-[16px]">
-                                {/* Qr code*/}
                                 <div className="w-[110px] h-[110px] bg-white border-2 border-gray-300 flex items-center justify-center relative">
                                     <QRCodeSVG
                                         value={`https://id.ilmiy.uz/user/card/${data?.profile?.science_id}`}
@@ -239,8 +238,6 @@ const GeneratorPage: React.FC = () => {
                                         className="w-[30px] h-[30px] absolute bottom-[42px] rounded-full right-[42px] bg-white"
                                     />
                                 </div>
-
-                                {/* Social media */}
                                 <div className="flex flex-col gap-[10px] ml-[20px]">
                                     <div className="flex items-center">
                                         <img
@@ -276,7 +273,7 @@ const GeneratorPage: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
 
             {/* Buttons */}

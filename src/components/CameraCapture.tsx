@@ -43,20 +43,113 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
 
     const startCamera = async () => {
         try {
-            const mediaStream = await navigator.mediaDevices.getUserMedia({
+            // Basic feature checks
+            if (
+                typeof navigator === 'undefined' ||
+                !('mediaDevices' in navigator)
+            ) {
+                setError(
+                    'Ushbu brauzer kamerani qo‘llab-quvvatlamaydi. Iltimos, Chrome/Edge yangilangan versiyasidan foydalaning.'
+                );
+                return;
+            }
+
+            // Secure context check (required by Chromium on Windows)
+            const isSecure =
+                ((window as any).isSecureContext ??
+                    location.protocol === 'https:') ||
+                location.hostname === 'localhost';
+            if (!isSecure) {
+                setError(
+                    'Kamera faqat xavfsiz muhitda ishlaydi (https yoki localhost). Iltimos, loyihani `https` orqali ishga tushiring.'
+                );
+                return;
+            }
+
+            // Try user-facing camera first; on Windows external cams may ignore facingMode
+            const preferredConstraints: MediaStreamConstraints = {
                 video: {
-                    facingMode: 'user',
-                    width: { ideal: 600 },
+                    facingMode: { ideal: 'user' } as any,
+                    width: { ideal: 1280 },
                     height: { ideal: 720 },
                 },
-            });
-            setStream(mediaStream);
-            if (videoRef.current) {
-                videoRef.current.srcObject = mediaStream;
+                audio: false,
+            };
+
+            let mediaStream: MediaStream | null = null;
+
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia(
+                    preferredConstraints
+                );
+            } catch {
+                // Fallback: relax constraints (some Windows drivers fail with facingMode/ideal sizes)
+                try {
+                    mediaStream = await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: false,
+                    });
+                } catch (e) {
+                    throw e;
+                }
             }
-        } catch (err) {
+
+            if (!mediaStream) {
+                setError(
+                    'Kamerani ishga tushirish imkonsiz. Tizimdagi boshqa ilovalar kamerani band qilmaganini tekshiring.'
+                );
+                return;
+            }
+
+            setStream(mediaStream);
+            const video = videoRef.current;
+            if (video) {
+                video.srcObject = mediaStream;
+                // Wait for metadata to ensure videoWidth/videoHeight are available, then play
+                const onLoadedMeta = () => {
+                    // Some Windows/Edge builds require explicit play()
+                    video.play().catch(() => {
+                        /* ignore autoplay errors since muted=true */
+                    });
+                    video.removeEventListener('loadedmetadata', onLoadedMeta);
+                };
+                video.addEventListener('loadedmetadata', onLoadedMeta);
+            }
+        } catch (err: any) {
+            // Map common Windows/Chromium errors to helpful messages
+            const name = err?.name || '';
+            if (
+                name === 'NotAllowedError' ||
+                name === 'PermissionDeniedError'
+            ) {
+                setError(
+                    'Kamera ruxsati rad etildi. Brauzer sozlamalaridan ruxsat bering va sahifani yangilang.'
+                );
+                return;
+            }
+            if (name === 'NotFoundError' || name === 'DevicesNotFoundError') {
+                setError(
+                    'Hech qanday kamera topilmadi. Qurilmani ulang yoki boshqa kamerani tanlang.'
+                );
+                return;
+            }
+            if (name === 'NotReadableError' || name === 'TrackStartError') {
+                setError(
+                    'Kameradan foydalanib bo‘lmadi. Kamera boshqa dastur tomonidan band bo‘lishi mumkin.'
+                );
+                return;
+            }
+            if (
+                name === 'OverconstrainedError' ||
+                name === 'ConstraintNotSatisfiedError'
+            ) {
+                setError(
+                    'Kamera sozlamalari mos kelmadi. Iltimos, boshqa kamerani tanlab ko‘ring.'
+                );
+                return;
+            }
             setError(
-                'Unable to access camera. Please ensure you have granted camera permissions.'
+                'Kamerani ishga tushirishda xatolik yuz berdi. Brauzer ruxsatlari va HTTPS muhitini tekshiring.'
             );
         }
     };
@@ -70,35 +163,62 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
 
         if (!context) return;
 
-        if (stream) {
-            stream.getTracks().forEach((track) => track.stop());
+        const performDraw = () => {
+            const videoWidth = video.videoWidth;
+            const videoHeight = video.videoHeight;
+
+            if (videoWidth === 0 || videoHeight === 0) {
+                return;
+            }
+
+            const aspectRatio = videoWidth / videoHeight;
+
+            const maxWidth = 600;
+            const maxHeight = 600;
+
+            let canvasWidth = maxWidth;
+            let canvasHeight = maxHeight;
+
+            if (aspectRatio > maxWidth / maxHeight) {
+                canvasHeight = maxWidth / aspectRatio;
+            } else {
+                canvasWidth = maxHeight * aspectRatio;
+            }
+
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+
+            context.imageSmoothingEnabled = true;
+            context.drawImage(video, 0, 0, canvasWidth, canvasHeight);
+            const imageData = canvas.toDataURL('image/jpeg', 0.95);
+
+            setCapturedImageData(imageData);
+            setShowPreview(true);
+
+            // Stop tracks AFTER drawing to avoid black frames on some Windows drivers
+            if (stream) {
+                stream.getTracks().forEach((track) => track.stop());
+            }
+        };
+
+        // Ensure we have current frame data before drawing
+        const hasData =
+            video.readyState >= 2 &&
+            video.videoWidth > 0 &&
+            video.videoHeight > 0;
+        if (!hasData) {
+            const onLoaded = () => {
+                video.removeEventListener('loadeddata', onLoaded);
+                // Draw on next animation frame to ensure paint
+                requestAnimationFrame(performDraw);
+            };
+            video.addEventListener('loadeddata', onLoaded);
+            video.play().catch(() => {});
+            return;
         }
 
-        const videoWidth = video.videoWidth;
-        const videoHeight = video.videoHeight;
-
-        const aspectRatio = videoWidth / videoHeight;
-
-        const maxWidth = 600;
-        const maxHeight = 600;
-
-        let canvasWidth = maxWidth;
-        let canvasHeight = maxHeight;
-
-        if (aspectRatio > maxWidth / maxHeight) {
-            canvasHeight = maxWidth / aspectRatio;
-        } else {
-            canvasWidth = maxHeight * aspectRatio;
-        }
-
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
-
-        context.drawImage(video, 0, 0, canvasWidth, canvasHeight);
-        const imageData = canvas.toDataURL('image/jpeg', 0.95);
-
-        setCapturedImageData(imageData);
-        setShowPreview(true);
+        // Draw on next frame for consistency
+        requestAnimationFrame(performDraw);
     };
 
     const handleSubmitImage = () => {
