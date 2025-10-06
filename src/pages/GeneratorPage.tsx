@@ -114,7 +114,7 @@ const GeneratorPage: React.FC = () => {
                                 <div className="italic text-[11px] text-[#535862]">
                                     Science ID:
                                 </div>
-                                <div className="text-[11px] font-semibold ml-1 text-[#000]">
+                                <div className="text-[12px] font-semibold ml-1 text-[#000]">
                                     {data?.profile?.science_id}
                                 </div>
                             </div>
@@ -140,43 +140,43 @@ const GeneratorPage: React.FC = () => {
                                 </div>
                                 <div className="flex flex-col ml-[12px]">
                                     <div className="flex flex-col">
-                                        <div className="text-[10px] text-[#535862] italic">
+                                        <div className="text-[11px] text-[#535862] italic">
                                             Familiyasi
                                         </div>
-                                        <div className="text-[11px] font-medium text-[#000]">
+                                        <div className="text-[12px] font-semibold text-[#000]">
                                             {data?.profile?.sur_name}
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
-                                        <div className="text-[10px] text-[#535862] italic">
+                                        <div className="text-[11px] text-[#535862] italic">
                                             Ismi
                                         </div>
-                                        <div className="text-[11px] font-medium text-[#000]">
+                                        <div className="text-[12px] font-semibold text-[#000]">
                                             {data?.profile?.first_name}
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
-                                        <div className="text-[10px] text-[#535862] italic">
+                                        <div className="text-[11px] text-[#535862] italic">
                                             Otasining ismi
                                         </div>
-                                        <div className="text-[11px] font-medium text-[#000]">
+                                        <div className="text-[12px] font-semibold text-[#000]">
                                             {data?.profile?.mid_name}
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
-                                        <div className="text-[10px] text-[#535862] italic">
+                                        <div className="text-[11px] text-[#535862] italic">
                                             Ilmiy darajasi
                                         </div>
-                                        <div className="text-[11px] font-medium text-[#000]">
+                                        <div className="text-[12px] font-semibold text-[#000]">
                                             {data?.profile?.degree_name ??
                                                 "Yo'q"}
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
-                                        <div className="text-[10px] text-[#535862] italic">
+                                        <div className="text-[11px] text-[#535862] italic">
                                             Ilmiy unvoni
                                         </div>
-                                        <div className="text-[11px] font-medium text-[#000]">
+                                        <div className="text-[12px] font-semibold text-[#000]">
                                             {data?.profile?.title ?? "Yo'q"}
                                         </div>
                                     </div>
@@ -184,20 +184,20 @@ const GeneratorPage: React.FC = () => {
                             </div>
                             <div className="flex flex-col ml-[35px] mt-[-35px]">
                                 <div className="flex flex-col">
-                                    <div className="text-[10px] text-[#535862] italic">
+                                    <div className="text-[11px] text-[#535862] italic">
                                         Tug'ilgan sanasi
                                     </div>
-                                    <div className="text-[11px] font-medium text-[#000]">
+                                    <div className="text-[12px] font-semibold text-[#000]">
                                         {moment(
                                             data?.profile?.birth_date
                                         ).format('DD.MM.YYYY') ?? "Yo'q"}
                                     </div>
                                 </div>
                                 <div className="flex flex-col">
-                                    <div className="text-[10px] text-[#535862] italic">
+                                    <div className="text-[11px] text-[#535862] italic">
                                         Ro'yxatdan o'tgan sana
                                     </div>
-                                    <div className="text-[11px] font-medium text-[#000]">
+                                    <div className="text-[12px] font-semibold text-[#000]">
                                         {moment(
                                             data?.profile?.registered_at
                                         ).format('DD.MM.YYYY') ?? "Yo'q"}
