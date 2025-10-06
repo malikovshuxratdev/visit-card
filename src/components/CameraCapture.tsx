@@ -15,6 +15,9 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
 }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const offscreenCanvasRef = useRef<HTMLCanvasElement | null>(null);
+    const detectionRafRef = useRef<number | null>(null);
+    const detectorRef = useRef<any>(null);
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [isCapturing, setIsCapturing] = useState(false);
     const [countdown, setCountdown] = useState(0);
@@ -29,6 +32,9 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
         return () => {
             if (stream) {
                 stream.getTracks().forEach((track) => track.stop());
+            }
+            if (detectionRafRef.current) {
+                cancelAnimationFrame(detectionRafRef.current);
             }
         };
     }, []);
@@ -111,6 +117,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
                     video.play().catch(() => {
                         /* ignore autoplay errors since muted=true */
                     });
+                    setupFaceDetector();
                     video.removeEventListener('loadedmetadata', onLoadedMeta);
                 };
                 video.addEventListener('loadedmetadata', onLoadedMeta);
@@ -154,12 +161,160 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
         }
     };
 
+    const isFaceDetectorSupported = () => {
+        return typeof window !== 'undefined' && (window as any).FaceDetector;
+    };
+
+    const setupFaceDetector = () => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        // Prepare offscreen canvas for detection snapshots
+        if (!offscreenCanvasRef.current) {
+            offscreenCanvasRef.current = document.createElement('canvas');
+        }
+
+        if (isFaceDetectorSupported()) {
+            try {
+                if (!detectorRef.current) {
+                    const FaceDetectorCtor = (window as any).FaceDetector;
+                    detectorRef.current = new FaceDetectorCtor({
+                        fastMode: true,
+                        maxDetectedFaces: 1,
+                    });
+                }
+            } catch {
+                detectorRef.current = null;
+            }
+        }
+
+        // Start detection loop
+        startDetectionLoop();
+    };
+
+    const startDetectionLoop = () => {
+        const video = videoRef.current;
+        const offscreen = offscreenCanvasRef.current;
+        if (!video || !offscreen) return;
+
+        const detect = async () => {
+            if (!videoRef.current) return;
+
+            const hasData =
+                video.readyState >= 2 &&
+                video.videoWidth > 0 &&
+                video.videoHeight > 0;
+
+            if (hasData && !isCapturing) {
+                const vw = video.videoWidth;
+                const vh = video.videoHeight;
+                offscreen.width = Math.min(512, vw);
+                offscreen.height = Math.floor((offscreen.width / vw) * vh);
+                const ctx = offscreen.getContext('2d', {
+                    willReadFrequently: true,
+                });
+                if (ctx) {
+                    ctx.drawImage(
+                        video,
+                        0,
+                        0,
+                        offscreen.width,
+                        offscreen.height
+                    );
+
+                    let detected = false;
+                    try {
+                        if (detectorRef.current) {
+                            const faces = await detectorRef.current.detect(
+                                offscreen
+                            );
+                            if (faces && faces.length > 0) {
+                                // Basic centeredness check relative to a circular guide (~square center)
+                                const face = faces[0].boundingBox;
+                                const cx = face.x + face.width / 2;
+                                const cy = face.y + face.height / 2;
+                                const centerX = offscreen.width / 2;
+                                const centerY = offscreen.height / 2;
+                                const dx = cx - centerX;
+                                const dy = cy - centerY;
+                                const distance = Math.sqrt(dx * dx + dy * dy);
+                                const radius =
+                                    Math.min(
+                                        offscreen.width,
+                                        offscreen.height
+                                    ) * 0.22; // ~align with 300px ring
+                                const sizeOk =
+                                    face.width > offscreen.width * 0.22 &&
+                                    face.height > offscreen.height * 0.22;
+                                detected = distance < radius && sizeOk;
+                            }
+                        } else {
+                            // Fallback heuristic: look for sufficient detail/contrast in the center region
+                            const regionSize = Math.floor(
+                                Math.min(offscreen.width, offscreen.height) *
+                                    0.4
+                            );
+                            const sx = Math.floor(
+                                (offscreen.width - regionSize) / 2
+                            );
+                            const sy = Math.floor(
+                                (offscreen.height - regionSize) / 2
+                            );
+                            const data = ctx.getImageData(
+                                sx,
+                                sy,
+                                regionSize,
+                                regionSize
+                            ).data;
+                            let sum = 0;
+                            let sumSq = 0;
+                            const step = 4 * 4; // sample every 4px
+                            let count = 0;
+                            for (let i = 0; i < data.length; i += step) {
+                                const r = data[i];
+                                const g = data[i + 1];
+                                const b = data[i + 2];
+                                const l = 0.299 * r + 0.587 * g + 0.114 * b;
+                                sum += l;
+                                sumSq += l * l;
+                                count++;
+                            }
+                            const mean = sum / Math.max(1, count);
+                            const variance =
+                                sumSq / Math.max(1, count) - mean * mean;
+                            // Heuristic: enough variance implies presence of detailed subject (likely a face) under the guide
+                            detected = variance > 900; // tuned empirically
+                        }
+                    } catch {
+                        // ignore detection errors per frame
+                    }
+
+                    setFaceDetected(detected);
+                    if (detected) {
+                        setFaceDetectionCount((prev) => prev + 1);
+                        if (faceDetectionCount >= 2 && !isCapturing) {
+                            handleManualCapture();
+                        }
+                    } else {
+                        setFaceDetectionCount(0);
+                    }
+                }
+            }
+
+            detectionRafRef.current = requestAnimationFrame(detect);
+        };
+
+        if (detectionRafRef.current)
+            cancelAnimationFrame(detectionRafRef.current);
+        detectionRafRef.current = requestAnimationFrame(detect);
+    };
+
     const captureImage = () => {
         if (!videoRef.current || !canvasRef.current) return;
 
         const video = videoRef.current;
         const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
+        const context = canvas.getContext('2d', { alpha: true });
 
         if (!context) return;
 
@@ -173,8 +328,8 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
 
             const aspectRatio = videoWidth / videoHeight;
 
-            const maxWidth = 600;
-            const maxHeight = 600;
+            const maxWidth = 800; // allow higher capture res on large screens
+            const maxHeight = 800;
 
             let canvasWidth = maxWidth;
             let canvasHeight = maxHeight;
@@ -188,9 +343,12 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
 
+            // Ensure we clear any prior pixels to avoid black backgrounds
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
             context.imageSmoothingEnabled = true;
             context.drawImage(video, 0, 0, canvasWidth, canvasHeight);
-            const imageData = canvas.toDataURL('image/jpeg', 0.95);
+            // Export as PNG to preserve transparency and avoid black fill
+            const imageData = canvas.toDataURL('image/png');
 
             setCapturedImageData(imageData);
             setShowPreview(true);
@@ -232,6 +390,10 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
         setCountdown(0);
         setFaceDetectionCount(0);
         setFaceDetected(false);
+        if (detectionRafRef.current) {
+            cancelAnimationFrame(detectionRafRef.current);
+            detectionRafRef.current = null;
+        }
         await startCamera();
     };
 
@@ -255,36 +417,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
         }, 1000);
     };
 
-    useEffect(() => {
-        const checkFaceAlignment = () => {
-            if (!videoRef.current || isCapturing) return;
-
-            const video = videoRef.current;
-            const videoWidth = video.videoWidth;
-            const videoHeight = video.videoHeight;
-
-            if (videoWidth === 0 || videoHeight === 0) return;
-
-            const hasVideo = video.readyState >= 2; // HAVE_CURRENT_DATA
-            const randomFaceDetection = hasVideo && Math.random() > 0.4;
-
-            setFaceDetected(randomFaceDetection);
-
-            if (randomFaceDetection) {
-                setFaceDetectionCount((prev) => prev + 1);
-
-                if (faceDetectionCount >= 2 && !isCapturing) {
-                    handleManualCapture();
-                    setFaceDetectionCount(0);
-                }
-            } else {
-                setFaceDetectionCount(0);
-            }
-        };
-
-        const interval = setInterval(checkFaceAlignment, 1000);
-        return () => clearInterval(interval);
-    }, [isCapturing, faceDetectionCount]);
+    // Detection is now driven by requestAnimationFrame loop
 
     if (error) {
         return (
@@ -315,7 +448,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
 
     if (showPreview && capturedImageData) {
         return (
-            <div className="flex items-center justify-center min-h-[80vh]">
+            <div className="flex items-center justify-center min-h-[80vh] px-4">
                 <div className="max-w-4xl mx-auto">
                     <Card className="glass-card border-0 shadow-xl">
                         <div className="text-center mb-6">
@@ -326,12 +459,8 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
                             <img
                                 src={capturedImageData}
                                 alt="Olingan rasm"
-                                className="rounded-xl shadow-lg mx-auto"
+                                className="rounded-xl shadow-lg mx-auto w-full max-w-[600px] h-auto"
                                 style={{
-                                    maxWidth: '600px',
-                                    maxHeight: '600px',
-                                    width: 'auto',
-                                    height: 'auto',
                                     objectFit: 'contain',
                                     transform: 'scaleX(-1)', // Ko'zgu effekti
                                 }}
@@ -371,8 +500,8 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
         );
     }
     return (
-        <div className="flex items-center justify-center min-h-[60vh]">
-            <div className="max-w-4xl mx-auto">
+        <div className="flex items-center justify-center min-h-[60vh] px-4">
+            <div className="max-w-4xl mx-auto w-full">
                 <Card className="glass-card border-0 shadow-xl">
                     <div className="text-center mb-6">
                         <Title level={2}>Yuzingizni Joylashtiring</Title>
@@ -383,6 +512,14 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
                                   } soniyada rasmga olinadi...`
                                 : '👤 Avtomatik rasmga olish uchun yuzingizni doira ichiga joylashtiring'}
                         </Text>
+                        {!isFaceDetectorSupported() && (
+                            <div className="mt-2">
+                                <Text className="text-gray-500">
+                                    Qurilmangizda avtomatik yuz aniqlash
+                                    cheklangan. Iltimos, qo‘lda rasmga oling.
+                                </Text>
+                            </div>
+                        )}
                         {faceDetected && (
                             <div className="mt-2">
                                 <div className="w-full bg-gray-200 rounded-full h-2">
@@ -400,10 +537,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
                         )}
                     </div>
 
-                    <div
-                        className="camera-container mx-auto mb-8 relative"
-                        style={{ width: '600px', height: '600px' }}
-                    >
+                    <div className="camera-container mx-auto mb-8 relative w-full max-w-[600px] aspect-square">
                         <video
                             ref={videoRef}
                             autoPlay
@@ -424,15 +558,15 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
                                         : 'border-blue-500 bg-blue-500 bg-opacity-10'
                                 }`}
                                 style={{
-                                    width: '300px',
-                                    height: '300px',
+                                    width: '55%',
+                                    height: '55%',
                                 }}
                             />
                         </div>
 
                         {countdown > 0 && (
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="text-8xl font-bold text-white bg-black bg-opacity-50 rounded-full w-24 h-24 flex items-center justify-center">
+                                <div className="text-6xl sm:text-7xl md:text-8xl font-bold text-white bg-black bg-opacity-50 rounded-full w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
                                     {countdown}
                                 </div>
                             </div>

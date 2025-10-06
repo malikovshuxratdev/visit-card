@@ -18,6 +18,7 @@ export const useVisitCardMutate = () => {
         },
         onError: (error) => {
             console.log(error);
+            message.error('Xatolik yuz berdi');
         },
     });
     return mutate;
