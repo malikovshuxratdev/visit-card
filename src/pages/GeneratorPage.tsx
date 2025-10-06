@@ -209,7 +209,7 @@ const GeneratorPage: React.FC = () => {
                 </div>
 
                 {/* Back Card */}
-                {/* <div
+                <div
                     ref={backCardRef}
                     className="relative rounded-[8px] w-[450px] h-[280px] overflow-hidden"
                 >
@@ -273,7 +273,7 @@ const GeneratorPage: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                </div> */}
+                </div>
             </div>
 
             {/* Buttons */}

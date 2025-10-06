@@ -88,13 +88,13 @@ const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
                         className="w-[450px] h-[280px] border shadow-md"
                     />
                 )}
-                {/* {backImage && (
+                {backImage && (
                     <img
                         src={backImage}
                         alt="Back Card Preview"
                         className="w-[450px] h-[280px] border shadow-md"
                     />
-                )} */}
+                )}
 
                 <Space>
                     <Button
