@@ -115,7 +115,7 @@ const GeneratorPage: React.FC = () => {
                                     Science ID:
                                 </div>
                                 <div className="text-[11px] font-semibold ml-1 text-[#000]">
-                                    {data?.profile.science_id}
+                                    {data?.profile?.science_id}
                                 </div>
                             </div>
                         </div>
@@ -144,7 +144,7 @@ const GeneratorPage: React.FC = () => {
                                             Familiyasi
                                         </div>
                                         <div className="text-[11px] font-medium text-[#000]">
-                                            {data?.profile.sur_name}
+                                            {data?.profile?.sur_name}
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
@@ -152,7 +152,7 @@ const GeneratorPage: React.FC = () => {
                                             Ismi
                                         </div>
                                         <div className="text-[11px] font-medium text-[#000]">
-                                            {data?.profile.first_name}
+                                            {data?.profile?.first_name}
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
@@ -160,7 +160,7 @@ const GeneratorPage: React.FC = () => {
                                             Otasining ismi
                                         </div>
                                         <div className="text-[11px] font-medium text-[#000]">
-                                            {data?.profile.mid_name}
+                                            {data?.profile?.mid_name}
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
