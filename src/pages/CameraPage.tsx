@@ -52,7 +52,29 @@ const CameraPage: React.FC = () => {
             });
             setStream(mediaStream);
             if (videoRef.current) {
-                videoRef.current.srcObject = mediaStream;
+                const video = videoRef.current;
+                video.srcObject = mediaStream;
+                // Ensure metadata is loaded before playing to avoid black frames
+                if (video.readyState < 2) {
+                    await new Promise<void>((resolve) => {
+                        const onLoaded = () => {
+                            video.removeEventListener(
+                                'loadedmetadata',
+                                onLoaded
+                            );
+                            resolve();
+                        };
+                        video.addEventListener('loadedmetadata', onLoaded, {
+                            once: true,
+                        });
+                    });
+                }
+                // Explicitly play the video; some browsers require this
+                try {
+                    await video.play();
+                } catch (e) {
+                    // Ignore play promise rejection (user gesture policies)
+                }
             }
         } catch (err) {
             setError(
@@ -70,8 +92,9 @@ const CameraPage: React.FC = () => {
 
         if (!context) return;
 
-        if (stream) {
-            stream.getTracks().forEach((track) => track.stop());
+        // Ensure the video has current data before capturing to avoid black images
+        if (video.readyState < 2) {
+            return; // Not ready yet; caller can retry shortly
         }
 
         const videoWidth = video.videoWidth;
@@ -110,6 +133,10 @@ const CameraPage: React.FC = () => {
                     });
                     setCapturedImageFile(file);
                     setIsFileReady(true);
+                    // Stop the stream only after we've captured the frame
+                    if (stream) {
+                        stream.getTracks().forEach((track) => track.stop());
+                    }
                 }
             },
             'image/jpeg',
