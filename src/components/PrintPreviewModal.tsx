@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Button, Space } from 'antd';
+import { PrinterOutlined } from '@ant-design/icons';
 
 interface PrintPreviewModalProps {
     visible: boolean;
@@ -106,9 +107,10 @@ const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
                     <Button
                         type="primary"
                         className="text-lg px-4 py-2 h-auto"
+                        icon={<PrinterOutlined />}
                         onClick={handlePrint}
                     >
-                        Chiqarish
+                        Chop etish
                     </Button>
                 </Space>
             </div>

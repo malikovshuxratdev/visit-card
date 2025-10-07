@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Button, Space, Spin } from 'antd';
-import { PrinterOutlined, ReloadOutlined } from '@ant-design/icons';
+import { ReloadOutlined } from '@ant-design/icons';
 import { QRCodeSVG } from 'qrcode.react';
 import * as htmlToImage from 'html-to-image';
 import frontCardImage from '../assets/images/frontImage.svg';
@@ -56,7 +56,7 @@ const GeneratorPage: React.FC = () => {
     const toPng = async (ref: React.RefObject<HTMLDivElement>) => {
         if (!ref.current) return;
         const rect = ref.current.getBoundingClientRect();
-        const scale = 4; // render at higher DPI for crisp PNG
+        const scale = 8; // render at a much higher DPI for maximum PNG sharpness
         return await htmlToImage.toPng(ref.current, {
             cacheBust: true,
             pixelRatio: scale,
@@ -115,7 +115,7 @@ const GeneratorPage: React.FC = () => {
                         {/* Science ID */}
                         <div className="mt-[65px]">
                             <div className="bg-[#8DAAD433] rounded-md p-1 w-[170px] flex items-center justify-center">
-                                <div className="italic text-[11px] text-[#535862]">
+                                <div className="italic text-[11px] text-[#2b2e33]">
                                     Science ID:
                                 </div>
                                 <div className="text-[12px] font-semibold ml-1 text-[#000]">
@@ -144,7 +144,7 @@ const GeneratorPage: React.FC = () => {
                                 </div>
                                 <div className="flex flex-col ml-[12px]">
                                     <div className="flex flex-col">
-                                        <div className="text-[11px] text-[#535862] italic">
+                                        <div className="text-[11px] text-[#2b2e33] italic">
                                             Familiyasi
                                         </div>
                                         <div className="text-[12px] font-semibold text-[#000]">
@@ -152,7 +152,7 @@ const GeneratorPage: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
-                                        <div className="text-[11px] text-[#535862] italic">
+                                        <div className="text-[11px] text-[#2b2e33] italic">
                                             Ismi
                                         </div>
                                         <div className="text-[12px] font-semibold text-[#000]">
@@ -160,7 +160,7 @@ const GeneratorPage: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
-                                        <div className="text-[11px] text-[#535862] italic">
+                                        <div className="text-[11px] text-[#2b2e33] italic">
                                             Otasining ismi
                                         </div>
                                         <div className="text-[12px] font-semibold text-[#000]">
@@ -168,7 +168,7 @@ const GeneratorPage: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
-                                        <div className="text-[11px] text-[#535862] italic">
+                                        <div className="text-[11px] text-[#2b2e33] italic">
                                             Ilmiy darajasi
                                         </div>
                                         <div className="text-[12px] font-semibold text-[#000]">
@@ -177,7 +177,7 @@ const GeneratorPage: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
-                                        <div className="text-[11px] text-[#535862] italic">
+                                        <div className="text-[11px] text-[#2b2e33] italic">
                                             Ilmiy unvoni
                                         </div>
                                         <div className="text-[12px] font-semibold text-[#000]">
@@ -294,13 +294,14 @@ const GeneratorPage: React.FC = () => {
                     <Button
                         type="primary"
                         size="large"
-                        icon={<PrinterOutlined />}
                         onClick={handleOpenPrintPreview}
                         className="border-0 text-lg px-4 py-2 h-auto"
                         loading={isGeneratingPng}
                         disabled={isGeneratingPng}
                     >
-                        {isGeneratingPng ? 'PNG yaratilmoqda...' : 'Chop etish'}
+                        {isGeneratingPng
+                            ? 'Tayyorlanmoqda...'
+                            : 'Printerga yuborish'}
                     </Button>
                 </Space>
             </div>
