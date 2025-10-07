@@ -13,6 +13,7 @@ import website from '../assets/icons/internet.svg';
 import innovation from '../assets/icons/innovation.svg';
 import { useNavigate, useParams } from 'react-router-dom';
 import PrintPreviewModal from '../components/PrintPreviewModal';
+import FullPageLoading from '../components/FullPageLoading';
 import { useGetUserQuery } from '../hooks/useVisitCard';
 import moment from 'moment';
 
@@ -28,9 +29,21 @@ const GeneratorPage: React.FC = () => {
     const [backImage, setBackImage] = useState<string>();
     const [isImagesLoading, setIsImagesLoading] = useState(true);
     const [isGeneratingPng, setIsGeneratingPng] = useState(false);
+    const [isPrinting, setIsPrinting] = useState(false);
 
     const handleStartOver = () => {
         navigate('/');
+    };
+
+    const handlePrintStart = () => {
+        setIsPrinting(true);
+        setIsModalOpen(false);
+
+        // 40 seconds loading, then navigate to home page
+        setTimeout(() => {
+            setIsPrinting(false);
+            navigate('/');
+        }, 40000);
     };
 
     // SVG rasmlar yuklash holatini kuzatish
@@ -84,6 +97,10 @@ const GeneratorPage: React.FC = () => {
             setIsGeneratingPng(false);
         }
     };
+
+    if (isPrinting) {
+        return <FullPageLoading />;
+    }
 
     if (isLoading || isImagesLoading) {
         return (
@@ -312,6 +329,7 @@ const GeneratorPage: React.FC = () => {
                 onClose={() => setIsModalOpen(false)}
                 frontImage={frontImage}
                 backImage={backImage}
+                onPrintStart={handlePrintStart}
             />
         </div>
     );

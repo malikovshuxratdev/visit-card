@@ -7,6 +7,7 @@ interface PrintPreviewModalProps {
     onClose: () => void;
     frontImage?: string;
     backImage?: string;
+    onPrintStart: () => void;
 }
 
 const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
@@ -14,6 +15,7 @@ const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
     onClose,
     frontImage,
     backImage,
+    onPrintStart,
 }) => {
     const handlePrint = () => {
         if (!frontImage && !backImage) return;
@@ -71,6 +73,9 @@ const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
         printWindow.document.open();
         printWindow.document.write(html);
         printWindow.document.close();
+
+        // Start full page loading
+        onPrintStart();
     };
 
     return (
