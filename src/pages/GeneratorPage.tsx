@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Button, Space, Spin } from 'antd';
-import { ReloadOutlined } from '@ant-design/icons';
+import { Button, Spin } from 'antd';
+import { ArrowLeftOutlined, PrinterOutlined } from '@ant-design/icons';
 import { QRCodeSVG } from 'qrcode.react';
 import * as htmlToImage from 'html-to-image';
 import frontCardImage from '../assets/images/frontImage.svg';
@@ -43,7 +43,7 @@ const GeneratorPage: React.FC = () => {
         setTimeout(() => {
             setIsPrinting(false);
             navigate('/');
-        }, 45000);
+        }, 10);
     };
 
     // SVG rasmlar yuklash holatini kuzatish
@@ -116,112 +116,194 @@ const GeneratorPage: React.FC = () => {
     }
 
     return (
-        <div className="mx-auto">
-            <div className="flex flex-col items-center space-y-8">
-                {/* Front Card */}
-                <div
-                    ref={frontCardRef}
-                    className="relative rounded-[8px] w-[450px] h-[280px] overflow-hidden"
-                >
-                    <img
-                        src={frontCardImage}
-                        alt="Front Card"
-                        className="w-[450px] h-[280px]"
-                    />
-                    <div className="w-[450px] h-[280px] absolute top-0 left-0 flex flex-col ml-[15px]">
-                        {/* Science ID */}
-                        <div className="mt-[65px]">
-                            <div className="bg-[#8DAAD433] rounded-md p-1 inline-flex items-center justify-center">
-                                <div className="italic text-[11px] text-[#2b2e33] whitespace-nowrap">
-                                    Science ID:
+        <div className="mx-auto px-32 mt-6">
+            <div className="bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md rounded-3xl shadow-2xl p-10 transition-all duration-300 border border-white/30 hover:shadow-3xl">
+                {/* Cards in Flex Row */}
+                <div className="flex items-center justify-center gap-8 mb-10">
+                    {/* Front Card */}
+                    <div className="transform hover:scale-105 transition-transform duration-300">
+                        <div
+                            ref={frontCardRef}
+                            className="relative rounded-[8px] w-[450px] h-[280px] overflow-hidden shadow-xl"
+                        >
+                            <img
+                                src={frontCardImage}
+                                alt="Front Card"
+                                className="w-[450px] h-[280px]"
+                            />
+                            <div className="w-[450px] h-[280px] absolute top-0 left-0 flex flex-col ml-[15px]">
+                                {/* Science ID */}
+                                <div className="mt-[65px]">
+                                    <div className="bg-[#8DAAD433] rounded-md p-1 inline-flex items-center justify-center">
+                                        <div className="italic text-[11px] text-[#2b2e33] whitespace-nowrap">
+                                            Science ID:
+                                        </div>
+                                        <div className="text-[12px] font-semibold ml-1 text-[#000] whitespace-nowrap">
+                                            {data?.profile?.science_id}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="text-[12px] font-semibold ml-1 text-[#000] whitespace-nowrap">
-                                    {data?.profile?.science_id}
+
+                                {/* Avatar */}
+                                <div className="flex items-center mt-[px]">
+                                    <div className="flex items-center justify-center">
+                                        <div className="border border-[#6D88B1] rounded-[2px] w-[114px] h-[148px] flex items-center justify-center relative">
+                                            <img
+                                                src={
+                                                    data?.profile?.photo ??
+                                                    defaultAvatar
+                                                }
+                                                className="w-[112px] h-[146px] object-cover rounded-[2px]"
+                                                alt="Avatar"
+                                            />
+                                            <img
+                                                src={verify}
+                                                className="w-[14px] h-[14px] absolute bottom-[8px] right-[4px]"
+                                                alt="Verify"
+                                            />
+                                        </div>
+                                        <div className="flex flex-col ml-[12px]">
+                                            <div className="flex flex-col">
+                                                <div className="text-[11px] text-[#2b2e33] italic">
+                                                    Familiyasi
+                                                </div>
+                                                <div className="text-[12px] font-semibold text-[#000]">
+                                                    {data?.profile?.sur_name}
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <div className="text-[11px] text-[#2b2e33] italic">
+                                                    Ismi
+                                                </div>
+                                                <div className="text-[12px] font-semibold text-[#000]">
+                                                    {data?.profile?.first_name}
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <div className="text-[11px] text-[#2b2e33] italic">
+                                                    Otasining ismi
+                                                </div>
+                                                <div className="text-[12px] font-semibold text-[#000]">
+                                                    {data?.profile?.mid_name}
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <div className="text-[11px] text-[#2b2e33] italic">
+                                                    Ilmiy darajasi
+                                                </div>
+                                                <div className="text-[12px] font-semibold text-[#000]">
+                                                    {data?.profile
+                                                        ?.degree_name ?? "Yo'q"}
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <div className="text-[11px] text-[#2b2e33] italic">
+                                                    Ilmiy unvoni
+                                                </div>
+                                                <div className="text-[12px] font-semibold text-[#000]">
+                                                    {data?.profile?.title ??
+                                                        "Yo'q"}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col ml-[35px] mt-[-35px]">
+                                        <div className="flex flex-col">
+                                            <div className="text-[11px] text-[#535862] italic">
+                                                Tug'ilgan sanasi
+                                            </div>
+                                            <div className="text-[12px] font-semibold text-[#000]">
+                                                {moment(
+                                                    data?.profile?.birth_date
+                                                ).format('DD.MM.YYYY') ??
+                                                    "Yo'q"}
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <div className="text-[11px] text-[#535862] italic">
+                                                Ro'yxatdan o'tgan sana
+                                            </div>
+                                            <div className="text-[12px] font-semibold text-[#000]">
+                                                {moment(
+                                                    data?.profile?.registered_at
+                                                ).format('DD.MM.YYYY') ??
+                                                    "Yo'q"}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        {/* Avatar */}
-                        <div className="flex items-center mt-[px]">
-                            <div className="flex items-center justify-center">
-                                <div className="border border-[#6D88B1] rounded-[2px] w-[114px] h-[148px] flex items-center justify-center relative">
-                                    <img
-                                        src={
-                                            data?.profile?.photo ??
-                                            defaultAvatar
-                                        }
-                                        className="w-[112px] h-[146px] object-cover rounded-[2px]"
-                                        alt="Avatar"
-                                    />
-                                    <img
-                                        src={verify}
-                                        className="w-[14px] h-[14px] absolute bottom-[8px] right-[4px]"
-                                        alt="Verify"
-                                    />
-                                </div>
-                                <div className="flex flex-col ml-[12px]">
-                                    <div className="flex flex-col">
-                                        <div className="text-[11px] text-[#2b2e33] italic">
-                                            Familiyasi
-                                        </div>
-                                        <div className="text-[12px] font-semibold text-[#000]">
-                                            {data?.profile?.sur_name}
-                                        </div>
+                    {/* Back Card */}
+                    <div className="transform hover:scale-105 transition-transform duration-300">
+                        <div
+                            ref={backCardRef}
+                            className="relative rounded-[8px] w-[450px] h-[280px] overflow-hidden shadow-xl"
+                        >
+                            <img
+                                src={backCardImage}
+                                alt="Back Card"
+                                className="w-[450px] h-[280px]"
+                            />
+                            <div className="w-[450px] h-[280px] absolute top-0 left-0 flex flex-col ml-[20px]">
+                                <div className="mt-[48px]">
+                                    <div className="font-medium text-xl text-[#212121] w-[360px]">
+                                        Ilmiy-innovatsion faoliyat bilan <br />
+                                        shug'ullanuvchi jismoniy shaxslar <br />
+                                        identifikatori
                                     </div>
-                                    <div className="flex flex-col">
-                                        <div className="text-[11px] text-[#2b2e33] italic">
-                                            Ismi
+                                    <div className="flex items-center mt-[16px]">
+                                        <div className="w-[110px] h-[110px] bg-white border-2 border-gray-300 flex items-center justify-center relative">
+                                            <QRCodeSVG
+                                                value={`https://id.ilmiy.uz/user/card/${data?.profile?.science_id}`}
+                                                size={110}
+                                                level="M"
+                                                includeMargin={false}
+                                            />
+                                            <img
+                                                src={innovation}
+                                                alt="Innovation"
+                                                className="w-[30px] h-[30px] absolute bottom-[42px] rounded-full right-[42px] bg-white"
+                                            />
                                         </div>
-                                        <div className="text-[12px] font-semibold text-[#000]">
-                                            {data?.profile?.first_name}
+                                        <div className="flex flex-col gap-[10px] ml-[20px]">
+                                            <div className="flex items-center">
+                                                <img
+                                                    src={phone}
+                                                    alt="Phone"
+                                                    className="w-[20px] h-[20px]"
+                                                />
+                                                <div className="text-[16px] font-medium text-[#212121] ml-[8px]">
+                                                    +
+                                                    {
+                                                        data?.profile
+                                                            ?.phone_number
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center">
+                                                <img
+                                                    src={email}
+                                                    alt="Email"
+                                                    className="w-[20px] h-[20px]"
+                                                />
+                                                <div className="text-[16px] font-medium text-[#212121] ml-[8px]">
+                                                    {data?.profile?.email}
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center">
+                                                <img
+                                                    src={website}
+                                                    alt="Website"
+                                                    className="w-[20px] h-[20px]"
+                                                />
+                                                <div className="text-[16px] font-medium text-[#212121] ml-[8px]">
+                                                    https://id.ilmiy.uz
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <div className="text-[11px] text-[#2b2e33] italic">
-                                            Otasining ismi
-                                        </div>
-                                        <div className="text-[12px] font-semibold text-[#000]">
-                                            {data?.profile?.mid_name}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <div className="text-[11px] text-[#2b2e33] italic">
-                                            Ilmiy darajasi
-                                        </div>
-                                        <div className="text-[12px] font-semibold text-[#000]">
-                                            {data?.profile?.degree_name ??
-                                                "Yo'q"}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <div className="text-[11px] text-[#2b2e33] italic">
-                                            Ilmiy unvoni
-                                        </div>
-                                        <div className="text-[12px] font-semibold text-[#000]">
-                                            {data?.profile?.title ?? "Yo'q"}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex flex-col ml-[35px] mt-[-35px]">
-                                <div className="flex flex-col">
-                                    <div className="text-[11px] text-[#535862] italic">
-                                        Tug'ilgan sanasi
-                                    </div>
-                                    <div className="text-[12px] font-semibold text-[#000]">
-                                        {moment(
-                                            data?.profile?.birth_date
-                                        ).format('DD.MM.YYYY') ?? "Yo'q"}
-                                    </div>
-                                </div>
-                                <div className="flex flex-col">
-                                    <div className="text-[11px] text-[#535862] italic">
-                                        Ro'yxatdan o'tgan sana
-                                    </div>
-                                    <div className="text-[12px] font-semibold text-[#000]">
-                                        {moment(
-                                            data?.profile?.registered_at
-                                        ).format('DD.MM.YYYY') ?? "Yo'q"}
                                     </div>
                                 </div>
                             </div>
@@ -229,98 +311,28 @@ const GeneratorPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Back Card */}
-                <div
-                    ref={backCardRef}
-                    className="relative rounded-[8px] w-[450px] h-[280px] overflow-hidden"
-                >
-                    <img
-                        src={backCardImage}
-                        alt="Back Card"
-                        className="w-[450px] h-[280px]"
-                    />
-                    <div className="w-[450px] h-[280px] absolute top-0 left-0 flex flex-col ml-[20px]">
-                        <div className="mt-[48px]">
-                            <div className="font-medium text-[18px] text-[#212121] w-[360px]">
-                                Ilmiy-innovatsion faoliyat bilan shug’ullanuvchi
-                                jismoniy shaxslarni identifikatori
-                            </div>
-                            <div className="flex items-center mt-[16px]">
-                                <div className="w-[110px] h-[110px] bg-white border-2 border-gray-300 flex items-center justify-center relative">
-                                    <QRCodeSVG
-                                        value={`https://id.ilmiy.uz/user/card/${data?.profile?.science_id}`}
-                                        size={110}
-                                        level="M"
-                                        includeMargin={false}
-                                    />
-                                    <img
-                                        src={innovation}
-                                        alt="Innovation"
-                                        className="w-[30px] h-[30px] absolute bottom-[42px] rounded-full right-[42px] bg-white"
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-[10px] ml-[20px]">
-                                    <div className="flex items-center">
-                                        <img
-                                            src={phone}
-                                            alt="Phone"
-                                            className="w-[20px] h-[20px]"
-                                        />
-                                        <div className="text-[16px] font-medium text-[#212121] ml-[8px]">
-                                            +{data?.profile?.phone_number}
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center">
-                                        <img
-                                            src={email}
-                                            alt="Email"
-                                            className="w-[20px] h-[20px]"
-                                        />
-                                        <div className="text-[16px] font-medium text-[#212121] ml-[8px]">
-                                            {data?.profile?.email}
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center">
-                                        <img
-                                            src={website}
-                                            alt="Website"
-                                            className="w-[20px] h-[20px]"
-                                        />
-                                        <div className="text-[16px] font-medium text-[#212121] ml-[8px]">
-                                            https://id.ilmiy.uz
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Buttons */}
-            <div className="text-center mt-8">
-                <Space size="large">
+                {/* Buttons */}
+                <div className="flex items-center justify-center gap-6">
                     <Button
                         size="large"
                         onClick={handleStartOver}
-                        icon={<ReloadOutlined />}
-                        className=" text-lg px-4 py-2 h-auto"
+                        icon={<ArrowLeftOutlined />}
+                        className="text-lg px-5 py-6 h-auto bg-gradient-to-r from-gray-100 to-gray-200 border-0 shadow-xl hover:shadow-2xl transition-all duration-300"
                     >
-                        Boshiga Qaytarish
+                        Ortga Qaytarish
                     </Button>
                     <Button
                         type="primary"
                         size="large"
+                        icon={<PrinterOutlined />}
                         onClick={handleOpenPrintPreview}
-                        className="border-0 text-lg px-4 py-2 h-auto"
+                        className="text-lg px-5 py-6 h-auto bg-gradient-to-r from-green-500 to-blue-600 border-0 shadow-xl hover:shadow-2xl transition-all duration-300"
                         loading={isGeneratingPng}
                         disabled={isGeneratingPng}
                     >
-                        {isGeneratingPng
-                            ? 'Tayyorlanmoqda...'
-                            : 'Printerga yuborish'}
+                        {isGeneratingPng ? 'Tayyorlanmoqda...' : 'Chop etish'}
                     </Button>
-                </Space>
+                </div>
             </div>
 
             {/* Modal */}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, Space } from 'antd';
+import { Modal, Button } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 
 interface PrintPreviewModalProps {
@@ -83,41 +83,61 @@ const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
             open={visible}
             onCancel={onClose}
             footer={null}
-            width={600}
-            title="Kartani chop etishdan oldin ko'rib chiqing"
+            width={1000}
+            centered
+            title={
+                <div className="text-2xl font-bold text-center py-2">
+                    📋 Kartani chop etishdan oldin ko'rib chiqing
+                </div>
+            }
+            bodyStyle={{
+                padding: '10px',
+                background:
+                    'linear-gradient(to bottom right, rgba(255, 255, 255, 0.95), rgba(240, 240, 255, 0.95))',
+            }}
         >
-            <div className="flex flex-col items-center gap-6">
-                {frontImage && (
-                    <img
-                        src={frontImage}
-                        alt="Front Card Preview"
-                        className="w-[450px] h-[280px] border shadow-md"
-                    />
-                )}
-                {backImage && (
-                    <img
-                        src={backImage}
-                        alt="Back Card Preview"
-                        className="w-[450px] h-[280px] border shadow-md"
-                    />
-                )}
+            <div className="flex flex-col items-center gap-8">
+                {/* Cards Preview */}
+                <div className="flex flex-row items-center justify-center gap-6">
+                    {frontImage && (
+                        <div className="relative">
+                            <img
+                                src={frontImage}
+                                alt="Front Card Preview"
+                                className="w-[450px] h-[280px] rounded-lg"
+                            />
+                        </div>
+                    )}
+                    {backImage && (
+                        <div className="relative">
+                            <img
+                                src={backImage}
+                                alt="Back Card Preview"
+                                className="w-[450px] h-[280px] rounded-lg"
+                            />
+                        </div>
+                    )}
+                </div>
 
-                <Space>
+                {/* Buttons */}
+                <div className="flex items-center justify-center gap-6">
                     <Button
-                        className="text-lg px-4 py-2 h-auto"
+                        size="large"
+                        className="text-lg px-10 py-6 h-auto bg-gradient-to-r from-gray-100 to-gray-200 border-0 shadow-xl hover:shadow-2xl transition-all duration-300"
                         onClick={onClose}
                     >
-                        Bekor qilish
+                        ❌ Bekor qilish
                     </Button>
                     <Button
                         type="primary"
-                        className="text-lg px-4 py-2 h-auto"
+                        size="large"
+                        className="text-lg px-10 py-6 h-auto bg-gradient-to-r from-green-500 to-blue-600 border-0 shadow-xl hover:shadow-2xl transition-all duration-300"
                         icon={<PrinterOutlined />}
                         onClick={handlePrint}
                     >
-                        Chop etish
+                        🖨️ Chop etish
                     </Button>
-                </Space>
+                </div>
             </div>
         </Modal>
     );

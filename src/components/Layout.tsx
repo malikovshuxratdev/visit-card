@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import '../App.css';
 import { TokenService } from '../utils/storage';
 import bgImage from '../assets/images/bgImage.png';
-import logoInno from '../assets/images/logoInno.jpg';
+import logoInno from '../assets/images/logo.svg';
 
 const { Content } = Layout;
 
@@ -37,7 +37,7 @@ function AppLayout() {
                 <div className="flex px-4 justify-center items-center">
                     <div className="z-10 py-2 transform hover:scale-105 transition-transform duration-300">
                         <img
-                            className="w-[550px] drop-shadow-2xl rounded-lg"
+                            className="w-[800px] drop-shadow-2xl rounded-lg"
                             src={logoInno}
                             alt="Innovation Logo"
                         />

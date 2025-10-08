@@ -16,8 +16,8 @@ function BackCard() {
             <div className="w-[400px] h-[250px] absolute top-0 left-0 flex flex-col ml-[16px]">
                 <div className="mt-[40px]">
                     <div className="font-medium text-[14px] text-[#212121] w-[310px]">
-                        Ilmiy-innovatsion faoliyat bilan shug'ullanuvchi
-                        jismoniy shaxslarni identifikatori
+                        Ilmiy-innovatsion faoliyat bilan <br /> shug'ullanuvchi
+                        jismoniy shaxslarni <br /> identifikatori
                     </div>
                     <div className="flex items-center mt-[12px]">
                         <div className="w-[95px] h-[95px] bg-white border-2 border-gray-300 flex items-center justify-center relative">
