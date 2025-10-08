@@ -3,8 +3,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import '../App.css';
 import { TokenService } from '../utils/storage';
-import bgImage from '../assets/images/bgImage.png';
 import logoInno from '../assets/images/logo.svg';
+import innoVideo from '../assets/images/Innovator.mp4';
 
 const { Content } = Layout;
 
@@ -23,17 +23,23 @@ function AppLayout() {
     }
 
     return (
-        <Layout
-            className="min-h-screen"
-            style={{
-                backgroundImage: `url(${bgImage})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-            }}
-        >
-            <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/30 to-black/40" />
-            <div className="bg-gradient-to-b from-white/20 to-white/10 backdrop-blur-sm border-b border-white/20 shadow-lg">
+        <Layout className="min-h-screen relative overflow-hidden">
+            {/* Background Video */}
+            <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover z-0"
+            >
+                <source src={innoVideo} type="video/mp4" />
+            </video>
+
+            {/* Dark Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black/0 via-black/0 to-black/0 z-[1]" />
+
+            {/* Header */}
+            <div className="bg-gradient-to-b from-white/20 to-white/10 backdrop-blur-sm border-b border-white/20 shadow-lg relative z-10">
                 <div className="flex px-4 justify-center items-center">
                     <div className="z-10 py-2 transform hover:scale-105 transition-transform duration-300">
                         <img
@@ -44,6 +50,8 @@ function AppLayout() {
                     </div>
                 </div>
             </div>
+
+            {/* Content */}
             <Content className="p-6 relative z-10">
                 <div className="w-full mx-auto">
                     <Outlet />

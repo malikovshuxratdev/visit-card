@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { Button, Input, Typography, Space, message } from 'antd';
+import { Button, Input, Typography, Space } from 'antd';
 import { QRCodeSVG } from 'qrcode.react';
 import innovation from '../assets/icons/innovation.svg';
 import { useGetScienceIdQuery } from '../hooks/useVisitCard';
-import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
 
-const ScienceId: React.FC = () => {
+const ScienceIdComponent: React.FC = () => {
     const { mutate, isPending } = useGetScienceIdQuery();
     const [scienceId, setScienceId] = useState('');
     const [isValid, setIsValid] = useState(false);
-    const navigate = useNavigate();
 
     const formatScienceId = (value: string) => {
         value = value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
@@ -35,15 +33,7 @@ const ScienceId: React.FC = () => {
 
     const handleContinue = () => {
         if (formatScienceId(scienceId)) {
-            mutate(formatScienceId(scienceId), {
-                onSuccess: (data) => {
-                    if (data.pnfl_code === null) {
-                        message.error(data.message);
-                    } else {
-                        navigate(`/generator/${data.pnfl_code}`);
-                    }
-                },
-            });
+            mutate(formatScienceId(scienceId));
         }
     };
 
@@ -137,4 +127,4 @@ const ScienceId: React.FC = () => {
     );
 };
 
-export default ScienceId;
+export default ScienceIdComponent;
