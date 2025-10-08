@@ -87,7 +87,7 @@ const ScienceId: React.FC = () => {
                             type="primary"
                             size="large"
                             onClick={handleContinue}
-                            disabled={!isValid || isPending}
+                            disabled={isPending}
                             loading={isPending}
                             className={`text-lg px-10 py-6 h-auto w-full bg-gradient-to-r from-green-500 to-blue-600 border-1 shadow-xl hover:shadow-2xl `}
                         >

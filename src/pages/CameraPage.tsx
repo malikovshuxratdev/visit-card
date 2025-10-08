@@ -102,8 +102,8 @@ const CameraPage: React.FC = () => {
 
         const aspectRatio = videoWidth / videoHeight;
 
-        const maxWidth = 600;
-        const maxHeight = 600;
+        const maxWidth = 550;
+        const maxHeight = 550;
 
         let canvasWidth = maxWidth;
         let canvasHeight = maxHeight;
@@ -217,7 +217,7 @@ const CameraPage: React.FC = () => {
 
     if (error) {
         return (
-            <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="flex items-center justify-center min-h-[50vh]">
                 <div className="max-w-2xl mx-auto">
                     <Card className="glass-card border-0 shadow-xl">
                         <div className="text-center p-6">
@@ -244,7 +244,7 @@ const CameraPage: React.FC = () => {
 
     if (showPreview && capturedImageData) {
         return (
-            <div className="flex items-center justify-center min-h-[80vh]">
+            <div className="flex items-center justify-center min-h-[50vh]">
                 <div className="max-w-4xl mx-auto">
                     <Card className="glass-card border-0 shadow-xl">
                         <div className="text-center mb-6">
@@ -262,7 +262,7 @@ const CameraPage: React.FC = () => {
                                     width: 'auto',
                                     height: 'auto',
                                     objectFit: 'contain',
-                                    transform: 'scaleX(-1)', // Ko'zgu effekti
+                                    transform: 'scaleX(-1)',
                                 }}
                             />
                         </div>
@@ -273,14 +273,14 @@ const CameraPage: React.FC = () => {
                                     size="large"
                                     onClick={() => navigate('/')}
                                     icon={<ArrowLeftOutlined />}
-                                    className="text-lg px-8 py-4 h-auto"
+                                    className="text-lg px-4 py-2 h-auto"
                                 >
                                     Bekor Qilish
                                 </Button>
                                 <Button
                                     size="large"
                                     onClick={handleRetakePhoto}
-                                    className="border-orange-400 text-orange-600 text-lg px-8 py-4 h-auto"
+                                    className="border-orange-400 text-orange-600 text-lg px-4 py-2 h-auto"
                                     disabled={isPending}
                                 >
                                     📷 Qayta Olish
@@ -290,7 +290,7 @@ const CameraPage: React.FC = () => {
                                     size="large"
                                     onClick={handleSubmitImage}
                                     loading={isPending}
-                                    className="bg-gradient-to-r from-green-500 to-blue-600 border-0 shadow-lg text-lg px-8 py-4 h-auto"
+                                    className="bg-gradient-to-r from-green-500 to-blue-600 border-0 shadow-lg text-lg px-4 py-2 h-auto"
                                     disabled={isPending || !isFileReady}
                                 >
                                     {!isFileReady
@@ -305,19 +305,19 @@ const CameraPage: React.FC = () => {
         );
     }
     return (
-        <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="flex items-center justify-center min-h-[50vh]">
             <div className="max-w-4xl mx-auto">
                 <Card className="glass-card border-0 shadow-xl">
                     <div className="text-center mb-6">
                         <Title level={2}>Yuzingizni Joylashtiring</Title>
-                        <Text className="text-gray-600 text-lg">
+                        <Text className="text-gray-600 text-sm">
                             {faceDetected
                                 ? `✅Avtomatik ravishda ${
                                       3 - faceDetectionCount
                                   } soniyada rasmga olinadi...`
                                 : '👤 Avtomatik rasmga olish uchun yuzingizni doira ichiga joylashtiring'}
                         </Text>
-                        {faceDetected && (
+                        {faceDetected ? (
                             <div className="mt-2">
                                 <div className="w-full bg-gray-200 rounded-full h-2">
                                     <div
@@ -331,12 +331,17 @@ const CameraPage: React.FC = () => {
                                     ></div>
                                 </div>
                             </div>
+                        ) : (
+                            <div className="">
+                                Qurilmangizda avtomatik yuz aniqlash cheklangan.
+                                Iltimos, qo‘lda rasmga oling.
+                            </div>
                         )}
                     </div>
 
                     <div
                         className="camera-container mx-auto mb-8 relative"
-                        style={{ width: '600px', height: '600px' }}
+                        style={{ width: '550px', height: '550px' }}
                     >
                         <video
                             ref={videoRef}
@@ -379,7 +384,7 @@ const CameraPage: React.FC = () => {
                                 size="large"
                                 onClick={() => navigate('/')}
                                 icon={<ArrowLeftOutlined />}
-                                className="shadow-lg text-lg px-8 py-4 h-auto"
+                                className="shadow-lg text-lg px-4 py-2 h-auto"
                             >
                                 Bekor Qilish
                             </Button>
@@ -389,7 +394,7 @@ const CameraPage: React.FC = () => {
                                 icon={<CameraOutlined />}
                                 onClick={handleManualCapture}
                                 disabled={isCapturing}
-                                className="bg-gradient-to-r from-blue-500 to-purple-600 border-0 shadow-lg text-lg px-8 py-4 h-auto"
+                                className="bg-gradient-to-r from-blue-500 to-purple-600 border-0 shadow-lg text-lg px-4 py-2 h-auto"
                             >
                                 {isCapturing
                                     ? 'Rasmga Olinmoqda...'
