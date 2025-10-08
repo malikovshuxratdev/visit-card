@@ -30,3 +30,17 @@ export interface Profile {
     title: string;
     photo: string;
 }
+
+export interface FaceIdRequestType {
+    pnfl_code: string;
+    image: File;
+}
+
+export interface FaceIdResponseType {
+    is_match: boolean;
+    pnfl_code: string;
+    similarity_percentage: number;
+    confidence_score: number;
+    processing_time_seconds: number;
+    threshold_used: string;
+}

@@ -43,7 +43,7 @@ const GeneratorPage: React.FC = () => {
         setTimeout(() => {
             setIsPrinting(false);
             navigate('/');
-        }, 10);
+        }, 45000);
     };
 
     // SVG rasmlar yuklash holatini kuzatish

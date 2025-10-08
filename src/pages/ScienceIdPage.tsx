@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import ScienceId from '../components/ScienceId';
+import ScienceIdComponent from '../components/ScienceIdComponent';
 
 const ScienceIdPage: React.FC = () => {
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ const ScienceIdPage: React.FC = () => {
 
                 {/* Main Card */}
                 <div className="bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md rounded-3xl shadow-2xl p-10 border border-white/30">
-                    <ScienceId />
+                    <ScienceIdComponent />
                 </div>
             </div>
         </div>

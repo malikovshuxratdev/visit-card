@@ -11,7 +11,7 @@ const ScienceIdInfo = () => {
     };
 
     const handleScienceId = () => {
-        // navigate('/science-id');
+        navigate('/science-id');
     };
 
     return (

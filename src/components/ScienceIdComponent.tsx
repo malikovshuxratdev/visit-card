@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Button, Input, Typography, Space } from 'antd';
+import { Button, Input, Typography, Space, message } from 'antd';
 import { QRCodeSVG } from 'qrcode.react';
 import innovation from '../assets/icons/innovation.svg';
 import { useGetScienceIdQuery } from '../hooks/useVisitCard';
+import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
 
 const ScienceIdComponent: React.FC = () => {
     const { mutate, isPending } = useGetScienceIdQuery();
+    const navigate = useNavigate();
     const [scienceId, setScienceId] = useState('');
     const [isValid, setIsValid] = useState(false);
 
@@ -33,7 +35,15 @@ const ScienceIdComponent: React.FC = () => {
 
     const handleContinue = () => {
         if (formatScienceId(scienceId)) {
-            mutate(formatScienceId(scienceId));
+            mutate(formatScienceId(scienceId), {
+                onSuccess: (data) => {
+                    if (data.pnfl_code === null) {
+                        message.error(data.message);
+                    } else {
+                        navigate(`/camera/${data.pnfl_code}`);
+                    }
+                },
+            });
         }
     };
 

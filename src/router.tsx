@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
                 element: <ScienceIdPage />,
             },
             {
-                path: 'camera',
+                path: 'camera/:id?',
                 element: <CameraPage />,
             },
             {

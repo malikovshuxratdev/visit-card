@@ -40,3 +40,22 @@ export const useGetUserQuery = (pnfl_code: string) => {
         queryFn: () => visitCardApi.getUserData(pnfl_code),
     });
 };
+
+export const useGetFaceIdMutate = () => {
+    const navigate = useNavigate();
+
+    const mutate = useMutation({
+        mutationFn: visitCardApi.getFaceId,
+        onSuccess: (data) => {
+            if (data?.is_match === false) {
+                message.error('Rasim mos emas');
+            } else {
+                navigate(`/generator/${data.pnfl_code}`);
+            }
+        },
+        onError: (error: any) => {
+            message.error('Tizimda xatolik yuz berdi');
+        },
+    });
+    return mutate;
+};

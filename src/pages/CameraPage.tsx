@@ -1,14 +1,17 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Card, Button, Alert, Space, Typography } from 'antd';
 import { CameraOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import { useVisitCardMutate } from '../hooks/useVisitCard';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useGetFaceIdMutate, useVisitCardMutate } from '../hooks/useVisitCard';
 
 const { Title, Text } = Typography;
 
 const CameraPage: React.FC = () => {
     const navigate = useNavigate();
+    const { id } = useParams<{ id?: string }>();
     const { mutate, isPending } = useVisitCardMutate();
+    const { mutate: mutateFaceId, isPending: isPendingFaceId } =
+        useGetFaceIdMutate();
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [stream, setStream] = useState<MediaStream | null>(null);
@@ -148,7 +151,11 @@ const CameraPage: React.FC = () => {
 
     const handleSubmitImage = () => {
         if (capturedImageFile && isFileReady) {
-            mutate({ image: capturedImageFile });
+            if (id) {
+                mutateFaceId({ image: capturedImageFile, pnfl_code: id });
+            } else {
+                mutate({ image: capturedImageFile });
+            }
         }
     };
 
@@ -281,7 +288,7 @@ const CameraPage: React.FC = () => {
                                     size="large"
                                     onClick={handleRetakePhoto}
                                     className="border-orange-400 text-orange-600 text-lg px-4 py-2 h-auto"
-                                    disabled={isPending}
+                                    disabled={isPending || isPendingFaceId}
                                 >
                                     📷 Qayta Olish
                                 </Button>
@@ -289,7 +296,7 @@ const CameraPage: React.FC = () => {
                                     type="primary"
                                     size="large"
                                     onClick={handleSubmitImage}
-                                    loading={isPending}
+                                    loading={isPending || isPendingFaceId}
                                     className="bg-gradient-to-r from-green-500 to-blue-600 border-0 shadow-lg text-lg px-4 py-2 h-auto"
                                     disabled={isPending || !isFileReady}
                                 >
