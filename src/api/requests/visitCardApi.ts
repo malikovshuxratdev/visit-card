@@ -9,6 +9,7 @@ import { baseApiClient } from '../baseClient';
 const urls = {
     getVisitCard: '/recognize_face',
     getUserData: (pnfl_code: string) => `/profile/${pnfl_code}`,
+    getScienceId: (science_id: string) => `/profile_scienceid/${science_id}`,
 };
 
 export class VisitCardAPI {
@@ -24,6 +25,13 @@ export class VisitCardAPI {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+        return result.data;
+    };
+
+    getScienceId = async (science_id: string) => {
+        const result: AxiosResponse<ProfileResponseType> = await this.api.get(
+            urls.getScienceId(science_id)
+        );
         return result.data;
     };
 

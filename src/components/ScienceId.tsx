@@ -3,11 +3,13 @@ import { Button, Input, Typography, Space } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import innovation from '../assets/icons/innovation.svg';
+import { useGetScienceIdQuery } from '../hooks/useVisitCard';
 
 const { Text } = Typography;
 
 const ScienceId: React.FC = () => {
     const navigate = useNavigate();
+    const { mutate, data, isPending } = useGetScienceIdQuery();
     const [scienceId, setScienceId] = useState('');
     const [isValid, setIsValid] = useState(false);
 
@@ -33,7 +35,7 @@ const ScienceId: React.FC = () => {
 
     const handleContinue = () => {
         if (formatScienceId(scienceId)) {
-            navigate('');
+            mutate(formatScienceId(scienceId));
         }
     };
 
@@ -87,7 +89,8 @@ const ScienceId: React.FC = () => {
                             type="primary"
                             size="large"
                             onClick={handleContinue}
-                            disabled={!isValid}
+                            disabled={!isValid || isPending}
+                            loading={isPending}
                             className={`text-lg px-10 py-6 h-auto w-full ${
                                 isValid
                                     ? 'bg-gradient-to-r from-green-500 to-blue-600 border-0 shadow-xl hover:shadow-2xl'

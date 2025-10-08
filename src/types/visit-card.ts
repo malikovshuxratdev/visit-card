@@ -14,6 +14,7 @@ export interface ProfileResponseType {
     pnfl_code: string;
     profile: Profile;
     profile_found: boolean;
+    message?: string;
 }
 
 export interface Profile {

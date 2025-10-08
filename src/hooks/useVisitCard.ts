@@ -17,7 +17,25 @@ export const useVisitCardMutate = () => {
             }
         },
         onError: (error: any) => {
-            console.log(error);
+            message.error(error.response.data.detail);
+        },
+    });
+    return mutate;
+};
+
+export const useGetScienceIdQuery = () => {
+    const navigate = useNavigate();
+
+    const mutate = useMutation({
+        mutationFn: visitCardApi.getScienceId,
+        onSuccess: (data) => {
+            if (data.pnfl_code === null) {
+                message.error(data.message);
+            } else {
+                navigate(`/generator/${data.pnfl_code}`);
+            }
+        },
+        onError: (error: any) => {
             message.error(error.response.data.detail);
         },
     });
