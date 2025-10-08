@@ -1,6 +1,6 @@
 import frontCardImage from '../assets/images/frontImage.svg';
 import verify from '../assets/icons/verify.svg';
-import defaultAvatar from '../assets/images/default-avatar.png';
+import defaultAvatar from '../assets/images/defoultImage.jpg';
 import moment from 'moment';
 
 function FrontCard() {
@@ -46,7 +46,7 @@ function FrontCard() {
                                         Familiyasi
                                     </div>
                                     <div className="text-[10px] font-semibold text-[#000]">
-                                        ISMOILOV
+                                        IKROMOV
                                     </div>
                                 </div>
                                 <div className="flex flex-col">
@@ -54,7 +54,7 @@ function FrontCard() {
                                         Ismi
                                     </div>
                                     <div className="text-[10px] font-semibold text-[#000]">
-                                        DUSTMUROD
+                                        AKROM
                                     </div>
                                 </div>
                                 <div className="flex flex-col">
@@ -62,7 +62,7 @@ function FrontCard() {
                                         Otasining ismi
                                     </div>
                                     <div className="text-[10px] font-semibold text-[#000]">
-                                        G'AYBULLA O'G'LI
+                                        MURODOVICH
                                     </div>
                                 </div>
                                 <div className="flex flex-col">
@@ -89,7 +89,7 @@ function FrontCard() {
                                     Tug'ilgan sanasi
                                 </div>
                                 <div className="text-[10px] font-semibold text-[#000]">
-                                    {moment('1990-01-01').format(
+                                    {moment('2000-01-01').format(
                                         'DD.MM.YYYY'
                                     ) ?? "Yo'q"}
                                 </div>
@@ -99,7 +99,7 @@ function FrontCard() {
                                     Ro'yxatdan o'tgan sana
                                 </div>
                                 <div className="text-[10px] font-semibold text-[#000]">
-                                    {moment('2021-01-01').format(
+                                    {moment('2025-01-01').format(
                                         'DD.MM.YYYY'
                                     ) ?? "Yo'q"}
                                 </div>
