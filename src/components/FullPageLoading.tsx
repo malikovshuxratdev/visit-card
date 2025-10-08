@@ -1,6 +1,6 @@
 import React from 'react';
 import Lottie from 'lottie-react';
-import printerAnimation from '../assets/animations/Printing.json';
+import printerAnimation from '../assets/animations/printing.json';
 
 interface FullPageLoadingProps {
     message?: string;
