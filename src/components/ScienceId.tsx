@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, Input, Typography, Space } from 'antd';
-import { useNavigate } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import innovation from '../assets/icons/innovation.svg';
 import { useGetScienceIdQuery } from '../hooks/useVisitCard';
@@ -8,8 +7,7 @@ import { useGetScienceIdQuery } from '../hooks/useVisitCard';
 const { Text } = Typography;
 
 const ScienceId: React.FC = () => {
-    const navigate = useNavigate();
-    const { mutate, data, isPending } = useGetScienceIdQuery();
+    const { mutate, isPending } = useGetScienceIdQuery();
     const [scienceId, setScienceId] = useState('');
     const [isValid, setIsValid] = useState(false);
 
