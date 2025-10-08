@@ -16,9 +16,9 @@ export const useVisitCardMutate = () => {
                 navigate(`/generator/${data.pnfl_code}`);
             }
         },
-        onError: (error) => {
+        onError: (error: any) => {
             console.log(error);
-            message.error('Xatolik yuz berdi');
+            message.error(error.response.data.detail);
         },
     });
     return mutate;

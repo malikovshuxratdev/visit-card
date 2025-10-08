@@ -46,20 +46,8 @@ function HomePage() {
 
     return (
         <div className="mx-auto">
-            {/* Header Section */}
-            <div className="text-center">
-                <Title level={1} className="text-5xl font-bold">
-                    Shaxsiy Kartangizni Yarating
-                </Title>
-            </div>
-
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 items-start">
                 <Card className="flex items-center justify-center border-0 shadow-2xl">
-                    <div className="text-center mb-6">
-                        <Text className="text-gray-600 text-base">
-                            Sizning kartangiz bunday ko'rinishda bo'ladi
-                        </Text>
-                    </div>
                     <div className="space-y-8">
                         <FrontCard />
                         <BackCard />

@@ -69,7 +69,7 @@ const GeneratorPage: React.FC = () => {
     const toPng = async (ref: React.RefObject<HTMLDivElement>) => {
         if (!ref.current) return;
         const rect = ref.current.getBoundingClientRect();
-        const scale = 8; // render at a much higher DPI for maximum PNG sharpness
+        const scale = 2; // render at a much higher DPI for maximum PNG sharpness
         return await htmlToImage.toPng(ref.current, {
             cacheBust: true,
             pixelRatio: scale,
@@ -131,11 +131,11 @@ const GeneratorPage: React.FC = () => {
                     <div className="w-[450px] h-[280px] absolute top-0 left-0 flex flex-col ml-[15px]">
                         {/* Science ID */}
                         <div className="mt-[65px]">
-                            <div className="bg-[#8DAAD433] rounded-md p-1 w-[170px] flex items-center justify-center">
-                                <div className="italic text-[11px] text-[#2b2e33]">
+                            <div className="bg-[#8DAAD433] rounded-md p-1 inline-flex items-center justify-center">
+                                <div className="italic text-[11px] text-[#2b2e33] whitespace-nowrap">
                                     Science ID:
                                 </div>
-                                <div className="text-[12px] font-semibold ml-1 text-[#000]">
+                                <div className="text-[12px] font-semibold ml-1 text-[#000] whitespace-nowrap">
                                     {data?.profile?.science_id}
                                 </div>
                             </div>

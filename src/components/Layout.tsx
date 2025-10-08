@@ -3,9 +3,10 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import '../App.css';
 import { TokenService } from '../utils/storage';
-import logo from '../assets/icons/innovation.svg';
+import BgImage from '../assets/images/bgImage.png';
+import navimg2 from '../assets/images/logoInno.jpg';
 
-const { Content, Header } = Layout;
+const { Content } = Layout;
 
 function AppLayout() {
     const token = TokenService.getToken();
@@ -22,20 +23,23 @@ function AppLayout() {
     }
 
     return (
-        <Layout className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-            <Header className="bg-white shadow-sm mt-4 mx-4 rounded-lg !h-auto py-2">
-                <div className="max-w-6xl mx-auto flex items-center gap-2">
-                    <img
-                        src={logo}
-                        alt="Logo"
-                        className="w-[40px] h-[40px] cursor-pointer"
-                    />
-                    <span className="gap-2 text-3xl font-bold">
-                        Visit Card Generator
-                    </span>
+        <Layout
+            className="min-h-screen"
+            style={{
+                backgroundImage: `url(${BgImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+            }}
+        >
+            {/* <div className="absolute inset-0 bg-black/30" />
+            <div className="bg-white/15">
+                <div className="flex px-4 justify-center items-center">
+                    <div className="z-10 py-4">
+                        <img className="w-[550px]" src={navimg2} alt="" />
+                    </div>
                 </div>
-            </Header>
-
+            </div> */}
             <Content className="p-4">
                 <div className="max-w-6xl mx-auto">
                     <Outlet />

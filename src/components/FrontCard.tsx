@@ -15,12 +15,12 @@ function FrontCard() {
                 <div className="w-[450px] h-[280px] absolute top-0 left-0 flex flex-col ml-[15px]">
                     {/* Science ID */}
                     <div className="mt-[65px]">
-                        <div className="bg-[#8DAAD433] rounded-md p-1 w-[170px] flex items-center justify-center">
+                        <div className="bg-[#8DAAD433] rounded-md p-1 inline-flex items-center justify-center">
                             <div className="italic text-[11px] text-[#2b2e33]">
                                 Science ID:
                             </div>
                             <div className="text-[12px] font-semibold ml-1 text-[#000]">
-                                BTN-001-0001
+                                MMM-0000-0000
                             </div>
                         </div>
                     </div>
