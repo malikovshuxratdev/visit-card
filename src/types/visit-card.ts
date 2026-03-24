@@ -12,7 +12,7 @@ export interface VisitCardResponseType {
 
 export interface ProfileResponseType {
     pnfl_code: string;
-    profile: Profile;
+    profile: Profile | null;
     profile_found: boolean;
     message?: string;
 }

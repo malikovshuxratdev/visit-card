@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Button, Spin } from 'antd';
+import { Button, Spin, Alert, Card } from 'antd';
 import { ArrowLeftOutlined, PrinterOutlined } from '@ant-design/icons';
 import { QRCodeSVG } from 'qrcode.react';
 import * as htmlToImage from 'html-to-image';
@@ -111,6 +111,34 @@ const GeneratorPage: React.FC = () => {
                         ? "Ma'lumotlar yuklanmoqda..."
                         : 'Visit card yuklanmoqda...'}
                 </div>
+            </div>
+        );
+    }
+
+    if (!data?.profile_found || !data?.profile) {
+        return (
+            <div className="min-h-[50vh] flex items-center justify-center p-4">
+                <Card className="max-w-xl w-full">
+                    <Alert
+                        message="Ma'lumot topilmadi"
+                        description={
+                            data?.message ??
+                            "Tashqi API dan ma'lumot olinmadi"
+                        }
+                        type="warning"
+                        showIcon
+                        className="mb-4"
+                    />
+                    <Button
+                        type="primary"
+                        size="large"
+                        onClick={handleStartOver}
+                        icon={<ArrowLeftOutlined />}
+                        className="w-full"
+                    >
+                        Bosh sahifaga qaytish
+                    </Button>
+                </Card>
             </div>
         );
     }
