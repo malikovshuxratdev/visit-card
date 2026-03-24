@@ -1,8 +1,8 @@
 import { loginApi } from '../api/requests/loginApi';
 import { useMutation } from './useQuery';
 import { TokenService } from '../utils/storage';
-import { message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { showErrorModal } from '../utils/showErrorModal';
 
 export const useLoginMutate = () => {
     const navigate = useNavigate();
@@ -16,9 +16,10 @@ export const useLoginMutate = () => {
             }
         },
         onError: () => {
-            message.error(
-                "Login yoki parol noto'g'ri. Qaytadan urinib ko'ring."
-            );
+            showErrorModal({
+                content:
+                    "Login yoki parol noto'g'ri. Qaytadan urinib ko'ring.",
+            });
         },
     });
     return mutate;

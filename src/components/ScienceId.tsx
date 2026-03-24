@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Input, Typography, Space, message } from 'antd';
+import { Button, Input, Typography, Space } from 'antd';
 import { QRCodeSVG } from 'qrcode.react';
 import innovation from '../assets/icons/innovation.svg';
 import { useGetScienceIdQuery } from '../hooks/useVisitCard';
+import { showErrorModal } from '../utils/showErrorModal';
 import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
@@ -38,9 +39,11 @@ const ScienceId: React.FC = () => {
             mutate(formatScienceId(scienceId), {
                 onSuccess: (data) => {
                     if (data.pnfl_code === null) {
-                        message.error(data.message);
+                        showErrorModal({
+                            content: data.message ?? 'Science ID tekshiruvi muvaffaqiyatsiz',
+                        });
                     } else {
-                        navigate(`/generator/${data.pnfl_code}`);
+                        navigate(`/camera/${data.pnfl_code}`);
                     }
                 },
             });
@@ -78,11 +81,10 @@ const ScienceId: React.FC = () => {
                             onChange={handleInputChange}
                             onKeyPress={handleKeyPress}
                             maxLength={13}
-                            className={`text-center text-xl font-mono ${
-                                isValid
-                                    ? 'border-green-500 border-2'
-                                    : 'border-white/30'
-                            }`}
+                            className={`text-center text-xl font-mono ${isValid
+                                ? 'border-green-500 border-2'
+                                : 'border-white/30'
+                                }`}
                             style={{
                                 height: '60px',
                                 backgroundColor: 'rgba(255, 255, 255, 0.9)',
@@ -97,7 +99,7 @@ const ScienceId: React.FC = () => {
                             type="primary"
                             size="large"
                             onClick={handleContinue}
-                            disabled={isPending}
+                            disabled={isPending || !isValid}
                             loading={isPending}
                             className={`text-lg px-10 py-6 h-auto w-full bg-gradient-to-r from-green-500 to-blue-600 border-1 shadow-xl hover:shadow-2xl `}
                         >
