@@ -3,8 +3,8 @@ import { Button, Spin, Alert, Card } from 'antd';
 import { ArrowLeftOutlined, PrinterOutlined } from '@ant-design/icons';
 import { QRCodeSVG } from 'qrcode.react';
 import * as htmlToImage from 'html-to-image';
-import frontCardImage from '../assets/images/frontImage.svg';
-import backCardImage from '../assets/images/backImage.svg';
+import frontCardImage from '../assets/images/frontImage.png';
+import backCardImage from '../assets/images/backImage.png';
 import verify from '../assets/icons/verify.svg';
 import defaultAvatar from '../assets/images/default-avatar.png';
 import phone from '../assets/icons/phone.svg';
@@ -345,7 +345,7 @@ const GeneratorPage: React.FC = () => {
                         size="large"
                         onClick={handleStartOver}
                         icon={<ArrowLeftOutlined />}
-                        className="text-lg px-5 py-6 h-auto bg-gradient-to-r from-gray-100 to-gray-200 border-0 shadow-xl hover:shadow-2xl transition-all duration-300"
+                        className="text-lg px-8 py-4 h-auto bg-gradient-to-r from-gray-100 to-gray-200 border-0 shadow-xl hover:shadow-2xl transition-all duration-300"
                     >
                         Ortga Qaytarish
                     </Button>
@@ -354,7 +354,7 @@ const GeneratorPage: React.FC = () => {
                         size="large"
                         icon={<PrinterOutlined />}
                         onClick={handleOpenPrintPreview}
-                        className="text-lg px-5 py-6 h-auto bg-gradient-to-r from-green-500 to-blue-600 border-0 shadow-xl hover:shadow-2xl transition-all duration-300"
+                        className="text-lg px-8 py-4 h-auto bg-gradient-to-r from-green-500 to-blue-600 border-0 shadow-xl hover:shadow-2xl transition-all duration-300"
                         loading={isGeneratingPng}
                         disabled={isGeneratingPng}
                     >

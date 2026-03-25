@@ -1,4 +1,4 @@
-import frontCardImage from '../assets/images/frontImage.svg';
+import frontCardImage from '../assets/images/frontImage.png';
 import verify from '../assets/icons/verify.svg';
 import defaultAvatar from '../assets/images/defoultImage.jpg';
 import moment from 'moment';

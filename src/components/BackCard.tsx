@@ -1,5 +1,5 @@
 import { QRCodeSVG } from 'qrcode.react';
-import backCardImage from '../assets/images/backImage.svg';
+import backCardImage from '../assets/images/backImage.png';
 import innovation from '../assets/icons/innovation.svg';
 import phone from '../assets/icons/phone.svg';
 import email from '../assets/icons/email.svg';
