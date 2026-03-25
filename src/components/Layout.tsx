@@ -41,12 +41,12 @@ function AppLayout() {
             {/* Header */}
             <div className="bg-gradient-to-b from-white/20 to-white/10 backdrop-blur-sm border-b border-white/20 shadow-lg relative z-10">
                 <div className="flex px-4 justify-center items-center">
-                    <div className="z-10 py-2 transform hover:scale-105 transition-transform duration-300">
-                        <img
+                    <div className="z-10 py-2 transform hover:scale-105 transition-transform duration-300 h-[120px]">
+                        {/* <img
                             className="w-[800px] drop-shadow-2xl rounded-lg"
                             src={logoInno}
                             alt="Innovation Logo"
-                        />
+                        /> */}
                     </div>
                 </div>
             </div>
