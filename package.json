@@ -1,12 +1,14 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "visit-card",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "typecheck": "tsc -b",
     "lint": "eslint .",
+    "verify": "tsc -b && eslint . && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
