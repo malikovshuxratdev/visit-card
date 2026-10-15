@@ -1,0 +1,137 @@
+{
+    "common": {
+        "app-name": "Science ID tashrif kartasi",
+        "brand": {
+            "name": "Science",
+            "accent": "ID",
+            "tagline": "Shaxsiy tashrif kartasi",
+            "home-label": "Bosh sahifaga qaytish"
+        },
+        "back": "Ortga",
+        "cancel": "Bekor qilish",
+        "home": "Bosh sahifa",
+        "ok": "Yaxshi",
+        "retry": "Qayta urinish",
+        "not-available": "Yo'q",
+        "errors": {
+            "title": "Xatolik",
+            "unknown": "Tizimda xatolik yuz berdi. Qaytadan urinib ko'ring.",
+            "network": "Server bilan aloqa yo'q. Internet ulanishini tekshiring."
+        }
+    },
+    "steps": {
+        "science-id": "Science ID",
+        "face-id": "Yuzni tasdiqlash",
+        "print": "Chop etish"
+    },
+    "pages": {
+        "login": {
+            "title": "Tizimga kirish",
+            "subtitle": "Davom etish uchun operator login va parolini kiriting",
+            "username": "Login",
+            "username-placeholder": "Loginni kiriting",
+            "username-required": "Loginni kiriting",
+            "username-min": "Login kamida 3 ta belgidan iborat bo'lishi kerak",
+            "password": "Parol",
+            "password-placeholder": "Parolni kiriting",
+            "password-required": "Parolni kiriting",
+            "password-min": "Parol kamida 6 ta belgidan iborat bo'lishi kerak",
+            "submit": "Kirish",
+            "invalid-credentials": "Login yoki parol noto'g'ri. Qaytadan urinib ko'ring."
+        },
+        "home": {
+            "eyebrow": "1-qadam",
+            "title": "Science ID raqamingizni kiriting",
+            "subtitle": "Raqam orqali profilingizni topamiz, so'ng yuzingizni tasdiqlab, kartani chop etamiz.",
+            "input-label": "Science ID",
+            "input-placeholder": "ABC-0000-0000",
+            "input-hint": "Format: 3 ta harf va 8 ta raqam",
+            "submit": "Davom etish",
+            "no-id-title": "Science ID yo'qmi?",
+            "no-id-text": "QR kodni telefoningiz bilan skanerlang va id.ilmiy.uz saytida ro'yxatdan o'ting.",
+            "preview-title": "Karta namunasi",
+            "preview-text": "Tayyor karta ikki tomonlama chop etiladi",
+            "lookup-failed": "Science ID bo'yicha profil topilmadi"
+        },
+        "camera": {
+            "eyebrow": "2-qadam",
+            "title": "Yuzingizni tasdiqlang",
+            "model-loading": "Yuzni aniqlash tizimi yuklanmoqda…",
+            "model-failed": "Avtomatik aniqlash ishlamadi. Rasmni tugma orqali oling.",
+            "no-face": "Yuzingizni doira ichiga joylashtiring",
+            "multiple-faces": "Kadrda faqat bitta odam bo'lishi kerak",
+            "adjust": "Yuzingizni doira markaziga to'g'rilang",
+            "hold-still": "Ajoyib! Qimirlamay turing…",
+            "capturing": "Rasmga olinmoqda…",
+            "alignment": "Joylashuv",
+            "capture": "Rasmga olish",
+            "preview-title": "Rasmni tekshiring",
+            "preview-subtitle": "Yuzingiz aniq va yorug' ko'rinayotganiga ishonch hosil qiling",
+            "retake": "Qayta olish",
+            "submit": "Tasdiqlash",
+            "preparing": "Tayyorlanmoqda…",
+            "verifying": "Tekshirilmoqda…",
+            "captured-alt": "Olingan rasm",
+            "no-match-title": "Rasm mos kelmadi",
+            "no-match": "Rasm Science ID platformasidagi surat bilan mos kelmadi. Iltimos, qayta urinib ko'ring.",
+            "errors": {
+                "title": "Kameraga ulanib bo'lmadi",
+                "denied": "Kameraga ruxsat berilmagan. Brauzer sozlamalarida kameraga ruxsat bering.",
+                "not-found": "Kamera topilmadi. Kamera ulanganini tekshiring.",
+                "unsupported": "Bu brauzer kamerani qo'llab-quvvatlamaydi.",
+                "unavailable": "Kamera boshqa dastur tomonidan band yoki ishlamayapti."
+            }
+        },
+        "generator": {
+            "eyebrow": "3-qadam",
+            "title": "Kartangiz tayyor",
+            "subtitle": "Ma'lumotlarni tekshiring va kartani chop eting",
+            "loading": "Ma'lumotlar yuklanmoqda…",
+            "not-found-title": "Ma'lumot topilmadi",
+            "not-found": "Profil ma'lumotlarini olib bo'lmadi.",
+            "front": "Old tomoni",
+            "back": "Orqa tomoni",
+            "print": "Chop etish",
+            "preparing": "Tayyorlanmoqda…",
+            "export-failed": "Kartani chop etishga tayyorlab bo'lmadi. Qaytadan urinib ko'ring."
+        },
+        "not-found": {
+            "title": "Sahifa topilmadi",
+            "text": "Siz qidirayotgan sahifa mavjud emas."
+        },
+        "error-boundary": {
+            "title": "Kutilmagan xatolik",
+            "text": "Sahifani qayta yuklang yoki bosh sahifaga qayting.",
+            "reload": "Qayta yuklash"
+        }
+    },
+    "components": {
+        "print-preview": {
+            "title": "Chop etishdan oldin ko'rib chiqing",
+            "subtitle": "Karta printerga ikki sahifa sifatida yuboriladi: avval old, so'ng orqa tomoni.",
+            "print": "Chop etish",
+            "preparing": "Tayyorlanmoqda…"
+        },
+        "printing": {
+            "title": "Karta chop etilmoqda…",
+            "text": "Iltimos, karta printerdan chiqquncha kuting",
+            "auto-return": "{{seconds}} soniyadan so'ng bosh sahifaga qaytiladi",
+            "done": "Tayyor, bosh sahifaga"
+        },
+        "card": {
+            "front-title": "Shaxsiy Science ID tashrif kartasi",
+            "back-title": "Personal Science ID business card",
+            "science-id": "Science ID:",
+            "surname": "Familiyasi",
+            "first-name": "Ismi",
+            "middle-name": "Otasining ismi",
+            "degree": "Ilmiy darajasi",
+            "academic-title": "Ilmiy unvoni",
+            "birth-date": "Tug'ilgan sanasi",
+            "registered-at": "Ro'yxatdan o'tgan sana",
+            "back-description": "Ilmiy-innovatsion faoliyat bilan shug'ullanuvchi jismoniy shaxslar identifikatori",
+            "avatar-alt": "Foydalanuvchi surati",
+            "verified-alt": "Tasdiqlangan"
+        }
+    }
+}

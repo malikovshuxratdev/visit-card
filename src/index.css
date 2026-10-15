@@ -2,60 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Visit card flip animation */
-.rotate-y-0 {
-    transform: rotateY(0deg);
-}
-
-.rotate-y-180 {
-    transform: rotateY(180deg);
-}
-
-.-rotate-y-180 {
-    transform: rotateY(-180deg);
-}
-
-.visit-card-preview {
-    perspective: 1000px;
-}
-
-.visit-card-preview > div {
-    transform-style: preserve-3d;
-}
-
-/* Custom shadow effects */
-.shadow-3xl {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
-
-/* Smooth scrollbar */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
-}
-
-/* Gradient animation */
-@keyframes gradient-shift {
-    0% {
-        background-position: 0% 50%;
+@layer base {
+    html,
+    body,
+    #root {
+        min-height: 100%;
     }
-    50% {
-        background-position: 100% 50%;
+
+    body {
+        @apply bg-ink-950 font-sans text-white antialiased;
     }
-    100% {
-        background-position: 0% 50%;
+}
+
+@layer components {
+    .glass {
+        @apply border border-white/10 bg-ink-900/70 shadow-panel backdrop-blur-xl;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
