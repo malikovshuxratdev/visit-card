@@ -88,6 +88,9 @@ function CameraPage() {
     const recognize = useRecognizeFaceMutation();
     const verify = useVerifyFaceMutation();
     const isSubmitting = recognize.isPending || verify.isPending;
+    // With a PNFL (came from Science ID) the face is verified against that
+    // profile; without one the person is looked up by face only.
+    const mode = pnflCode ? 'verify' : 'recognize';
 
     const [photo, setPhoto] = useState<CapturedPhoto | null>(null);
     const [countdown, setCountdown] = useState(0);
@@ -214,6 +217,9 @@ function CameraPage() {
         return (
             <CapturePreview
                 photo={photo}
+                eyebrow={t(`pages.camera.${mode}.eyebrow`)}
+                submitLabel={t(`pages.camera.${mode}.submit`)}
+                submittingLabel={t(`pages.camera.${mode}.submitting`)}
                 isSubmitting={isSubmitting}
                 onCancel={goHome}
                 onRetake={handleRetake}
@@ -248,8 +254,9 @@ function CameraPage() {
         <Panel className="mx-auto flex w-full max-w-xl animate-fade-up flex-col gap-6">
             <PageHeading
                 align="center"
-                eyebrow={t('pages.camera.eyebrow')}
-                title={t('pages.camera.title')}
+                eyebrow={t(`pages.camera.${mode}.eyebrow`)}
+                title={t(`pages.camera.${mode}.title`)}
+                subtitle={t(`pages.camera.${mode}.subtitle`)}
             />
 
             <CameraViewport

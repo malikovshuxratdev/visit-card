@@ -4,7 +4,7 @@ Step 2 — webcam capture and face verification.
 
 | Path | Purpose |
 |---|---|
-| `pages/CameraPage.tsx` | `/camera/:id?` — live view → countdown → preview → submit. |
+| `pages/CameraPage.tsx` | `/camera/:id?` — live view → countdown → preview → submit. With `:id` (PNFL from Science ID) it verifies; without it, it recognizes by face only. Texts come from `pages.camera.verify.*` / `pages.camera.recognize.*`. |
 | `components/CameraViewport.tsx` | Mirrored square video, circular guide (idle / adjust / aligned), countdown badge. |
 | `components/CapturePreview.tsx` | Captured photo with Cancel / Retake / Confirm. |
 | `hooks/useCamera.ts` | Owns the `MediaStream` (640×480, front camera); maps errors to `denied`, `not-found`, `unsupported`, `unavailable`; always stops tracks. |

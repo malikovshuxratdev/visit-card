@@ -6,6 +6,9 @@ import { PageHeading, Panel } from '@/shared/ui';
 
 type CapturePreviewProps = {
     photo: CapturedPhoto;
+    eyebrow: string;
+    submitLabel: string;
+    submittingLabel: string;
     isSubmitting: boolean;
     onCancel: () => void;
     onRetake: () => void;
@@ -14,6 +17,9 @@ type CapturePreviewProps = {
 
 export function CapturePreview({
     photo,
+    eyebrow,
+    submitLabel,
+    submittingLabel,
     isSubmitting,
     onCancel,
     onRetake,
@@ -25,7 +31,7 @@ export function CapturePreview({
         <Panel className="mx-auto flex w-full max-w-xl animate-fade-up flex-col gap-6">
             <PageHeading
                 align="center"
-                eyebrow={t('pages.camera.eyebrow')}
+                eyebrow={eyebrow}
                 title={t('pages.camera.preview-title')}
                 subtitle={t('pages.camera.preview-subtitle')}
             />
@@ -60,9 +66,7 @@ export function CapturePreview({
                     loading={isSubmitting}
                     onClick={onSubmit}
                 >
-                    {isSubmitting
-                        ? t('pages.camera.verifying')
-                        : t('pages.camera.submit')}
+                    {isSubmitting ? submittingLabel : submitLabel}
                 </Button>
             </div>
         </Panel>

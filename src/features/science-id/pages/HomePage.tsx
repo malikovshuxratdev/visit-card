@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import {
+    FaceScanOption,
     NoScienceIdHint,
     ScienceIdForm,
 } from '@/features/science-id/components';
@@ -23,6 +24,7 @@ function HomePage() {
                     subtitle={t('pages.home.subtitle')}
                 />
                 <ScienceIdForm />
+                <FaceScanOption />
                 <NoScienceIdHint />
             </Panel>
 

@@ -47,6 +47,10 @@
             "input-placeholder": "ABC-0000-0000",
             "input-hint": "Format: 3 ta harf va 8 ta raqam",
             "submit": "Davom etish",
+            "or": "yoki",
+            "face-scan-title": "Science ID raqamingizni bilmaysizmi?",
+            "face-scan-text": "Yuzingizni kameraga ko'rsating — profilingizni rasm orqali topamiz.",
+            "face-scan-submit": "Yuz orqali topish",
             "no-id-title": "Science ID yo'qmi?",
             "no-id-text": "QR kodni telefoningiz bilan skanerlang va id.ilmiy.uz saytida ro'yxatdan o'ting.",
             "preview-title": "Karta namunasi",
@@ -54,8 +58,20 @@
             "lookup-failed": "Science ID bo'yicha profil topilmadi"
         },
         "camera": {
-            "eyebrow": "2-qadam",
-            "title": "Yuzingizni tasdiqlang",
+            "verify": {
+                "eyebrow": "2-qadam",
+                "title": "Yuzingizni tasdiqlang",
+                "subtitle": "Rasm Science ID profilingizdagi surat bilan solishtiriladi",
+                "submit": "Tasdiqlash",
+                "submitting": "Tekshirilmoqda…"
+            },
+            "recognize": {
+                "eyebrow": "Yuz orqali qidirish",
+                "title": "Yuzingizni kameraga ko'rsating",
+                "subtitle": "Rasm orqali Science ID profilingizni topamiz",
+                "submit": "Profilni topish",
+                "submitting": "Qidirilmoqda…"
+            },
             "model-loading": "Yuzni aniqlash tizimi yuklanmoqda…",
             "model-failed": "Avtomatik aniqlash ishlamadi. Rasmni tugma orqali oling.",
             "no-face": "Yuzingizni doira ichiga joylashtiring",
@@ -68,9 +84,7 @@
             "preview-title": "Rasmni tekshiring",
             "preview-subtitle": "Yuzingiz aniq va yorug' ko'rinayotganiga ishonch hosil qiling",
             "retake": "Qayta olish",
-            "submit": "Tasdiqlash",
             "preparing": "Tayyorlanmoqda…",
-            "verifying": "Tekshirilmoqda…",
             "captured-alt": "Olingan rasm",
             "no-match-title": "Rasm mos kelmadi",
             "no-match": "Rasm Science ID platformasidagi surat bilan mos kelmadi. Iltimos, qayta urinib ko'ring.",
@@ -80,7 +94,9 @@
                 "not-found": "Kamera topilmadi. Kamera ulanganini tekshiring.",
                 "unsupported": "Bu brauzer kamerani qo'llab-quvvatlamaydi.",
                 "unavailable": "Kamera boshqa dastur tomonidan band yoki ishlamayapti."
-            }
+            },
+            "not-recognized-title": "Profil topilmadi",
+            "not-recognized": "Rasm bo'yicha Science ID profili topilmadi. Qayta urinib ko'ring yoki Science ID raqamingizni kiriting."
         },
         "generator": {
             "eyebrow": "3-qadam",

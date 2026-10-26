@@ -15,7 +15,8 @@ export const useRecognizeFaceMutation = () => {
         onSuccess: (data) => {
             if (!data?.pnfl_code) {
                 showErrorModal({
-                    content: data?.message || t('common.errors.unknown'),
+                    title: t('pages.camera.not-recognized-title'),
+                    content: data?.message || t('pages.camera.not-recognized'),
                 });
                 return;
             }
