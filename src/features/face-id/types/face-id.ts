@@ -16,12 +16,11 @@ export interface VerifyFaceBody {
 }
 
 export interface VerifyFaceResponse {
-    is_match: boolean;
     pnfl_code: string;
+    match: boolean;
     similarity_percentage: number;
     confidence_score: number;
     processing_time_seconds: number;
-    threshold_used: string;
 }
 
 export interface CapturedPhoto {

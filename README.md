@@ -46,7 +46,7 @@ The camera only works on `localhost` or over **HTTPS** (browser security rule).
 
 | Variable | Required | Description |
 |---|---|---|
-| `VITE_BASE_URI` | yes | Backend base URL, e.g. `https://api.example.com` |
+| `VITE_BASE_URI` | yes | Backend base URL including the `/api` prefix, e.g. `https://api-idcard.ilmiy1.uz/api` |
 
 `.env` is git-ignored — never commit it. Add new variables to `.env.example`,
 `src/vite-env.d.ts` and read them only in `src/shared/constants/envURI.ts`.
@@ -84,7 +84,7 @@ All requests go to `VITE_BASE_URI` with `Authorization: Bearer <token>`.
 |---|---|---|---|
 | `POST` | `/login` | `{ username, password }` | Operator login → `{ access_token, token_type, expires_in }` |
 | `GET` | `/profile_scienceid/:scienceId` | — | Science ID lookup → `{ pnfl_code, profile, profile_found, message? }` |
-| `POST` | `/verify_face` | multipart: `image` (JPEG 480×480), `pnfl_code` | Face check → `{ is_match, pnfl_code, similarity_percentage, … }` |
+| `POST` | `/verify_face` | multipart: `image` (JPEG 480×480), `pnfl_code` | Face check → `{ pnfl_code, match, similarity_percentage, confidence_score, processing_time_seconds }` |
 | `POST` | `/recognize_face` | multipart: `image` | Face-only search → `{ pnfl_code \| null, message, … }` |
 | `GET` | `/profile/:pnfl` | — | Card data → `{ pnfl_code, profile, profile_found, message? }` |
 

@@ -34,7 +34,7 @@ export const useVerifyFaceMutation = () => {
     return useMutation({
         mutationFn: faceIdApi.verifyFace,
         onSuccess: (data, variables) => {
-            if (!data?.is_match) {
+            if (!data?.match) {
                 showErrorModal({
                     title: t('pages.camera.no-match-title'),
                     content: t('pages.camera.no-match'),
