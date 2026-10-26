@@ -20,6 +20,6 @@ Card rules
 - All card text is pure `text-black` (sharp K panel on YMCKO printers) — never grey or semi-transparent.
 - `font-card` system font (web fonts are not embedded by the exporter).
 - Missing values show `common.not-available` ("Yo'q"); invalid dates too; empty phone/email rows are hidden.
-- QR on the back links to `https://id.ilmiy.uz/user/card/<science_id>` (sample card → `https://id.ilmiy.uz`).
+- QR on the back always links to `https://id.ilmiy.uz/` (platform home page, no per-user path).
 
 Colour tuning: see README → "Printing". Change one `PRINT_COLOR_PROFILE` value at a time and test on the real printer.

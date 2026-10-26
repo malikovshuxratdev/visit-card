@@ -42,7 +42,7 @@ function HomePage() {
                         <CardFront profile={SAMPLE_PROFILE} />
                     </CardPreview>
                     <CardPreview label={t('pages.generator.back')}>
-                        <CardBack profile={SAMPLE_PROFILE} isSample />
+                        <CardBack profile={SAMPLE_PROFILE} />
                     </CardPreview>
                 </div>
             </Panel>
