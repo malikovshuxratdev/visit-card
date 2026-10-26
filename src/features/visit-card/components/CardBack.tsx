@@ -7,24 +7,20 @@ import innovationIcon from '@/assets/icons/innovation.svg';
 import websiteIcon from '@/assets/icons/internet.svg';
 import phoneIcon from '@/assets/icons/phone.svg';
 import { CARD_HEIGHT, CARD_WIDTH } from '@/features/visit-card/constants';
-import { SCIENCE_ID_URL, scienceIdCardUrl } from '@/shared/constants';
+import { SCIENCE_ID_URL } from '@/shared/constants';
 import type { Profile } from '@/shared/types';
 import { formatPhone } from '@/shared/utils/format';
 
 type CardBackProps = {
     profile: Profile;
-    /** Sample cards link to the platform instead of a personal card page. */
-    isSample?: boolean;
 };
 
 export const CardBack = forwardRef<HTMLDivElement, CardBackProps>(
-    ({ profile, isSample = false }, ref) => {
+    ({ profile }, ref) => {
         const { t } = useTranslation();
         const phone = formatPhone(profile.phone_number);
-        const qrValue =
-            isSample || !profile.science_id
-                ? SCIENCE_ID_URL
-                : scienceIdCardUrl(profile.science_id);
+        /** The QR always links to the Science ID platform home page. */
+        const qrValue = SCIENCE_ID_URL;
 
         const contacts = [
             { icon: phoneIcon, value: phone },
